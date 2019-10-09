@@ -32,7 +32,7 @@
 .table-view .column-header,
 .table-view .column-header-background,
 .table-view .column-header-background .filler {
-    -fx-background-color: #BCAAA4;
+    -fx-background-color: #4c4c4c;
 }
 
 .table-view .column-header {
@@ -41,7 +41,7 @@
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: #101010;
+    -fx-text-fill: #ffa500;
     -fx-padding: 8 0 8 0;
 }
 
