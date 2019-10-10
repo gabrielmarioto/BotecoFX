@@ -1,8 +1,8 @@
-package botecofx.db.dal;
+package db.dal;
 
-import botecofx.db.util.Banco;
-import botecofx.db.entidades.Comanda;
-import botecofx.db.entidades.Garcon;
+import db.util.Banco;
+import db.entidades.Comanda;
+import db.entidades.Garcon;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;

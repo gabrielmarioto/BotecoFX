@@ -6,14 +6,14 @@
 package botecofx;
 
 import static botecofx.FXMLPrincipalController.spnprincipal;
-import botecofx.db.dal.DALCategoria;
-import botecofx.db.dal.DALProduto;
-import botecofx.db.dal.DALUnidade;
-import botecofx.db.entidades.Categoria;
-import botecofx.db.entidades.Produto;
-import botecofx.db.entidades.Unidade;
-import botecofx.util.ConsultaAPI;
-import botecofx.util.MaskFieldUtil;
+import db.dal.DALCategoria;
+import db.dal.DALProduto;
+import db.dal.DALUnidade;
+import db.entidades.Categoria;
+import db.entidades.Produto;
+import db.entidades.Unidade;
+import util.ConsultaAPI;
+import util.MaskFieldUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;

@@ -1,4 +1,4 @@
-package botecofx.db.entidades;
+package db.entidades;
 
 public class Garcon {
     

@@ -5,8 +5,8 @@
  */
 package botecofx;
 
-import botecofx.db.util.Banco;
-import botecofx.util.ConsultaAPI;
+import db.util.Banco;
+import util.ConsultaAPI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,6 +29,7 @@ public class BotecoFX extends Application {
         stage.setScene(scene);
         
         stage.setMaximized(true);
+        stage.setTitle("Boteco FX");
         stage.show();
     }
 

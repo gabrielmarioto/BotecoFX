@@ -1,19 +1,20 @@
-package botecofx.db.entidades;
+package db.entidades;
 
-public class Unidade {
+public class TipoPgto {
+    
     private int cod;
     private String nome;
 
-    public Unidade() {
+    public TipoPgto() {
         this(0,"");
     }
 
-    public Unidade(int cod, String nome) {
+    public TipoPgto(int cod, String nome) {
         this.cod = cod;
         this.nome = nome;
     }
 
-    public Unidade(String nome) {
+    public TipoPgto(String nome) {
         this.nome = nome;
     }
 
@@ -37,5 +38,6 @@ public class Unidade {
     public String toString() {
         return nome;
     }
+    
     
 }

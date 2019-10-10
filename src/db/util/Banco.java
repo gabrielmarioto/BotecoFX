@@ -1,4 +1,4 @@
-package botecofx.db.util;
+package db.util;
 
 // design pattern Singleton
 public class Banco 

@@ -58,7 +58,8 @@ public class FXMLPrincipalController implements Initializable {
 
     @FXML
     private void clkLink(ActionEvent event) {
-        try {
+        try 
+        {
             Desktop.getDesktop().browse(new URI("http://unoeste.br"));
         } catch (Exception ex) {
             Logger.getLogger(FXMLPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,7 +68,8 @@ public class FXMLPrincipalController implements Initializable {
 
     @FXML
     private void clkMostrarComandas(ActionEvent event) {
-        try {
+        try 
+        {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLPainelComanda.fxml"));
             pnprincipal.setCenter(root);
             
@@ -77,7 +79,9 @@ public class FXMLPrincipalController implements Initializable {
     }
 
     @FXML
-    private void clkNovaComanda(ActionEvent event) {
+    private void clkNovaComanda(ActionEvent event) 
+    {
+        
     }
     
     public static void efeito(boolean on)
@@ -97,7 +101,8 @@ public class FXMLPrincipalController implements Initializable {
     }
 
     @FXML
-    private void clkGoToHome(ActionEvent event) {
+    private void clkGoToHome(ActionEvent event) 
+    {
             FXMLPrincipalController.spnprincipal.setCenter(null);
             FXMLPrincipalController.efeito(false);
     }

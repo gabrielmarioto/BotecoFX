@@ -1,4 +1,4 @@
-package botecofx.db.util;
+package db.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -26,6 +26,8 @@ public class FXMLPainelComandaController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -38,7 +40,8 @@ public class FXMLPainelComandaController implements Initializable {
 //            System.out.println(ex);
 //        }
         try {
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 20; i++) 
+            {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComanda.fxml"));
                 Parent root = (Parent) loader.load();
                 FXMLComandaController ctr = loader.getController();

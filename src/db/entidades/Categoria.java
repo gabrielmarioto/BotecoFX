@@ -1,20 +1,20 @@
-package botecofx.db.entidades;
+package db.entidades;
 
-public class TipoPgto {
+public class Categoria {
     
     private int cod;
     private String nome;
 
-    public TipoPgto() {
+    public Categoria() {
         this(0,"");
     }
 
-    public TipoPgto(int cod, String nome) {
+    public Categoria(int cod, String nome) {
         this.cod = cod;
         this.nome = nome;
     }
 
-    public TipoPgto(String nome) {
+    public Categoria(String nome) {
         this.nome = nome;
     }
 

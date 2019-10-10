@@ -1,20 +1,19 @@
-package botecofx.db.entidades;
+package db.entidades;
 
-public class Categoria {
-    
+public class Unidade {
     private int cod;
     private String nome;
 
-    public Categoria() {
+    public Unidade() {
         this(0,"");
     }
 
-    public Categoria(int cod, String nome) {
+    public Unidade(int cod, String nome) {
         this.cod = cod;
         this.nome = nome;
     }
 
-    public Categoria(String nome) {
+    public Unidade(String nome) {
         this.nome = nome;
     }
 
@@ -38,6 +37,5 @@ public class Categoria {
     public String toString() {
         return nome;
     }
-    
     
 }

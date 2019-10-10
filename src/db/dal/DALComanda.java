@@ -1,7 +1,7 @@
-package botecofx.db.dal;
+package db.dal;
 
-import botecofx.db.util.Banco;
-import botecofx.db.entidades.Comanda;
+import db.util.Banco;
+import db.entidades.Comanda;
 import java.util.List;
 
 

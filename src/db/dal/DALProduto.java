@@ -1,7 +1,7 @@
-package botecofx.db.dal;
+package db.dal;
 
-import botecofx.db.entidades.Produto;
-import botecofx.db.util.Banco;
+import db.entidades.Produto;
+import db.util.Banco;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
