@@ -53,7 +53,10 @@ public class Produto {
     public void setCodu(Unidade codu) {
         this.codu = codu;
     }
-
+    public Unidade getUnidade()
+    {
+        return codu;
+    }
     public String getNome() {
         return nome;
     }

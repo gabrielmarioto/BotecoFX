@@ -106,5 +106,20 @@ public class FXMLPrincipalController implements Initializable {
             FXMLPrincipalController.spnprincipal.setCenter(null);
             FXMLPrincipalController.efeito(false);
     }
+
+    @FXML
+    private void clkCadGarcom(ActionEvent event) 
+    {
+        try 
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadGarcom.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+            
+            
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
     
 }

@@ -66,9 +66,13 @@ public class FXMLCadProduto2Controller implements Initializable {
     private JFXTextField txcod;
     @FXML
     private JFXTextField txnome;
+    @FXML
     private JFXTextField txdescr;
+    @FXML
     private JFXTextField txpreco;
+    @FXML
     private JFXComboBox<Unidade> cbunidade;
+    @FXML
     private JFXComboBox<Categoria> cbcategoria;
     @FXML
     private VBox pnpesquisa;
@@ -82,35 +86,11 @@ public class FXMLCadProduto2Controller implements Initializable {
     private TableColumn<Produto, String> colcod;
     @FXML
     private TableColumn<Produto, String> colnome;
+    @FXML
     private TableColumn<Produto, String> colpreco;
     @FXML
     private SplitPane painel;
-    @FXML
-    private JFXTextField txcpf;
-    @FXML
-    private JFXTextField txcep;
-    @FXML
-    private JFXTextField txendereco;
-    @FXML
-    private JFXTextField txcidade;
-    @FXML
-    private JFXTextField txuf;
-    @FXML
-    private JFXTextField txfone;
-    @FXML
-    private ImageView imgview_foto;
-    @FXML
-    private TableColumn<?, ?> colcpf;
-    @FXML
-    private TableColumn<?, ?> colcep;
-    @FXML
-    private TableColumn<?, ?> colendereco;
-    @FXML
-    private TableColumn<?, ?> colcidade;
-    @FXML
-    private TableColumn<?, ?> coluf;
-    @FXML
-    private TableColumn<?, ?> colfone;
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -120,15 +100,16 @@ public class FXMLCadProduto2Controller implements Initializable {
         colcod.setCellValueFactory(new PropertyValueFactory("cod"));
         colnome.setCellValueFactory(new PropertyValueFactory("nome"));
         colpreco.setCellValueFactory(new PropertyValueFactory("preco"));
+        MaskFieldUtil.monetaryField(txpreco);
         estadoOriginal();
     }
 
-    private void fadeout() {
+    private void fadeout() 
+    {
         FadeTransition ft = new FadeTransition(Duration.millis(1000), painel);
         ft.setFromValue(0);
         ft.setToValue(1);
-        ft.play();
-        MaskFieldUtil.monetaryField(txpreco);
+        ft.play();        
     }
 
     private void estadoOriginal() {
@@ -164,7 +145,8 @@ public class FXMLCadProduto2Controller implements Initializable {
         txnome.requestFocus();
     }
 
-    private void carregaTabela(String filtro) {
+    private void carregaTabela(String filtro) 
+    {
         DALProduto dal = new DALProduto();
         List<Produto> res = dal.get(filtro);
         ObservableList<Produto> modelo;
@@ -183,7 +165,8 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkbtalterar(ActionEvent event) {
+    private void clkbtalterar(ActionEvent event) 
+    {
         if (tabela.getSelectionModel().getSelectedItem() != null) {
             Produto p = (Produto) tabela.getSelectionModel().getSelectedItem();
             txcod.setText("" + p.getCod());
@@ -276,6 +259,7 @@ public class FXMLCadProduto2Controller implements Initializable {
     {
         if (tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
+            
             btalterar.setDisable(false);
             btapagar.setDisable(false);
             pndados.setDisable((false));
@@ -285,7 +269,10 @@ public class FXMLCadProduto2Controller implements Initializable {
             txdescr.setText(tabela.getSelectionModel().getSelectedItem().getDesc());
             txpreco.setText(""+tabela.getSelectionModel().getSelectedItem().getPreco());
             
-            //FAZER A PARTE DO COMBO BOX
+            
+            //FAZER COMBOBOX
+            cbcategoria.setValue(tabela.getSelectionModel().getSelectedItem().getCodc());
+            cbunidade.setValue(tabela.getSelectionModel().getSelectedItem().getUnidade());
 
         }
 
