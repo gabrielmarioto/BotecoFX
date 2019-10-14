@@ -36,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,13 +66,9 @@ public class FXMLCadProduto2Controller implements Initializable {
     private JFXTextField txcod;
     @FXML
     private JFXTextField txnome;
-    @FXML
     private JFXTextField txdescr;
-    @FXML
     private JFXTextField txpreco;
-    @FXML
     private JFXComboBox<Unidade> cbunidade;
-    @FXML
     private JFXComboBox<Categoria> cbcategoria;
     @FXML
     private VBox pnpesquisa;
@@ -85,10 +82,35 @@ public class FXMLCadProduto2Controller implements Initializable {
     private TableColumn<Produto, String> colcod;
     @FXML
     private TableColumn<Produto, String> colnome;
-    @FXML
     private TableColumn<Produto, String> colpreco;
     @FXML
     private SplitPane painel;
+    @FXML
+    private JFXTextField txcpf;
+    @FXML
+    private JFXTextField txcep;
+    @FXML
+    private JFXTextField txendereco;
+    @FXML
+    private JFXTextField txcidade;
+    @FXML
+    private JFXTextField txuf;
+    @FXML
+    private JFXTextField txfone;
+    @FXML
+    private ImageView imgview_foto;
+    @FXML
+    private TableColumn<?, ?> colcpf;
+    @FXML
+    private TableColumn<?, ?> colcep;
+    @FXML
+    private TableColumn<?, ?> colendereco;
+    @FXML
+    private TableColumn<?, ?> colcidade;
+    @FXML
+    private TableColumn<?, ?> coluf;
+    @FXML
+    private TableColumn<?, ?> colfone;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -100,16 +122,16 @@ public class FXMLCadProduto2Controller implements Initializable {
         colpreco.setCellValueFactory(new PropertyValueFactory("preco"));
         estadoOriginal();
     }
-    private void fadeout()
-    {
+
+    private void fadeout() {
         FadeTransition ft = new FadeTransition(Duration.millis(1000), painel);
         ft.setFromValue(0);
         ft.setToValue(1);
-        ft.play(); 
+        ft.play();
         MaskFieldUtil.monetaryField(txpreco);
     }
-    private void estadoOriginal()
-    {
+
+    private void estadoOriginal() {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         btconfirmar.setDisable(true);
@@ -117,18 +139,21 @@ public class FXMLCadProduto2Controller implements Initializable {
         btapagar.setDisable(true);
         btalterar.setDisable(true);
         btnovo.setDisable(false);
-       
-        ObservableList <Node> componentes=pndados.getChildren(); //”limpa” os componentes
-        for(Node n : componentes)
-        {
-            if (n instanceof TextInputControl)  // textfield, textarea e htmleditor
-                ((TextInputControl)n).setText("");
-            if(n instanceof ComboBox)
-                ((ComboBox)n).getItems().clear();
+
+        ObservableList<Node> componentes = pndados.getChildren(); //”limpa” os componentes
+        for (Node n : componentes) {
+            if (n instanceof TextInputControl) // textfield, textarea e htmleditor
+            {
+                ((TextInputControl) n).setText("");
+            }
+            if (n instanceof ComboBox) {
+                ((ComboBox) n).getItems().clear();
+            }
         }
-      
+
         carregaTabela("");
     }
+
     private void estadoEdicao() {     // carregar os componentes da tela (listbox, combobox, ...)
         // p.e. : carregaEstados();
         pnpesquisa.setDisable(true);
@@ -139,40 +164,38 @@ public class FXMLCadProduto2Controller implements Initializable {
         txnome.requestFocus();
     }
 
-    private void carregaTabela(String filtro) 
-    {
+    private void carregaTabela(String filtro) {
         DALProduto dal = new DALProduto();
         List<Produto> res = dal.get(filtro);
         ObservableList<Produto> modelo;
         modelo = FXCollections.observableArrayList(res);
         tabela.setItems(modelo);
-        List<Categoria> categorias=new DALCategoria().get("");
+        List<Categoria> categorias = new DALCategoria().get("");
         cbcategoria.setItems(FXCollections.observableArrayList(categorias));
         cbunidade.setItems(FXCollections.observableArrayList(new DALUnidade().get("")));
-        
+
     }
 
     @FXML
     private void clkBtNovo(ActionEvent event) {
-        
+
         estadoEdicao();
     }
 
     @FXML
     private void clkbtalterar(ActionEvent event) {
-        if(tabela.getSelectionModel().getSelectedItem()!=null)
-        {
-            Produto p = (Produto)tabela.getSelectionModel().getSelectedItem();
-            txcod.setText(""+p.getCod());
+        if (tabela.getSelectionModel().getSelectedItem() != null) {
+            Produto p = (Produto) tabela.getSelectionModel().getSelectedItem();
+            txcod.setText("" + p.getCod());
             txnome.setText(p.getNome());
             txdescr.setText(p.getDesc());
-            txpreco.setText(String.format("%10.2f",p.getPreco()));
+            txpreco.setText(String.format("%10.2f", p.getPreco()));
             estadoEdicao();
             cbcategoria.getSelectionModel().select(0);// gambis
             cbunidade.getSelectionModel().select(0);// gambis
             cbcategoria.getSelectionModel().select(p.getCodc());
-            cbunidade.getSelectionModel().select(p.getCodu());            
-            
+            cbunidade.getSelectionModel().select(p.getCodu());
+
         }
 
     }
@@ -199,9 +222,9 @@ public class FXMLCadProduto2Controller implements Initializable {
             cod = 0;
         }
         Produto p = new Produto(cod, cbcategoria.getValue(), cbunidade.getValue(),
-                                     txnome.getText(), 
-                                     Double.parseDouble(txpreco.getText().replace(".","").replace(",", ".")),
-                                     txdescr.getText());
+                txnome.getText(),
+                Double.parseDouble(txpreco.getText().replace(".", "").replace(",", ".")),
+                txdescr.getText());
         DALProduto dal = new DALProduto();
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if (p.getCod() == 0) // novo cadastro
@@ -222,11 +245,13 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkbtcancelar(ActionEvent event) {
+    private void clkbtcancelar(ActionEvent event) 
+    {
         if (!pndados.isDisabled()) // encontra em estado de edição
         {
             estadoOriginal();
-        } else {
+        } else 
+        {
             FXMLPrincipalController.spnprincipal.setCenter(null);
             FXMLPrincipalController.efeito(false);
         }
@@ -237,22 +262,33 @@ public class FXMLCadProduto2Controller implements Initializable {
     @FXML
     private void clkTxPesquisa(KeyEvent event) 
     {
-        carregaTabela("upper(prod_nome) like '%"+txpesquisa.getText().toUpperCase()+"%'");
+        carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkBtPesquisar(ActionEvent event) {
-        carregaTabela("upper(prod_nome) like '%"+txpesquisa.getText().toUpperCase()+"%'");
+    private void clkBtPesquisar(ActionEvent event) 
+    {
+        carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkTabela(MouseEvent event) {
-        if(tabela.getSelectionModel().getSelectedIndex()>=0)
+    private void clkTabela(MouseEvent event) 
+    {
+        if (tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
-           btalterar.setDisable(false);
-           btapagar.setDisable(false);
+            btalterar.setDisable(false);
+            btapagar.setDisable(false);
+            pndados.setDisable((false));
+            
+            txcod.setText(""+tabela.getSelectionModel().getSelectedItem().getCod());
+            txnome.setText(tabela.getSelectionModel().getSelectedItem().getNome());
+            txdescr.setText(tabela.getSelectionModel().getSelectedItem().getDesc());
+            txpreco.setText(""+tabela.getSelectionModel().getSelectedItem().getPreco());
+            
+            //FAZER A PARTE DO COMBO BOX
+
         }
 
     }
-    
+
 }
