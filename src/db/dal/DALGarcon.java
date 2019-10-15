@@ -86,43 +86,45 @@ public class DALGarcon {
         
         return aux;
     }
-    public boolean gravarFoto(Garcon g,FileInputStream foto)
+    public boolean gravarFoto(Garcon g, InputStream pic, int length)    
     {
         try
         {
-            PreparedStatement ps = Banco.getCon().getConnect().
-                    prepareStatement("UPDATE garcon set gar_foto = ? where gar_id=?");
-            ps.setBinaryStream(1, foto);
-            ps.setInt(2, g.getCod());
+            PreparedStatement ps = Banco.getCon().getConnect().prepareStatement("UPDATE garcon set gar_foto = ? where gar_id = " + g.getCod());
+            ps.setBinaryStream(1, pic, length);
             ps.executeUpdate();
             ps.close();
-            foto.close();
+            pic.close();
         }
         catch(Exception e)
         {
             return false;
         }
+        
         return true;
-    } 
-    public InputStream getFoto(Garcon g)
-    {   InputStream is=null;
+    }
+    
+    public InputStream getFoto(Garcon g)    
+    {
+        InputStream pic = null;
         try
         {
-            PreparedStatement ps = Banco.getCon().getConnect().
-                    prepareStatement("SELECT gar_foto from garcon where gar_id=?");
-            ps.setInt(1, g.getCod());
-            ResultSet rs=ps.executeQuery();
+            PreparedStatement ps = Banco.getCon().getConnect().prepareStatement("SELECT gar_foto FROM garcon where gar_id = " + g.getCod());
+            ResultSet rs = ps.executeQuery();
             if(rs.next())
             {
-                byte[] bytes=rs.getBytes("gar_foto");
-                is=new ByteArrayInputStream(bytes);
+                byte[] imgBytes = rs.getBytes("gar_foto");
+                pic = new ByteArrayInputStream(imgBytes);
             }
+            
             ps.close();
         }
         catch(Exception e)
         {
+            System.out.println(e.getMessage());
             return null;
         }
-        return is;
+        
+        return pic;
     }
 }

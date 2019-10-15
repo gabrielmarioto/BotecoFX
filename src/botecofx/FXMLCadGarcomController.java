@@ -10,7 +10,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALGarcon;
 import db.entidades.Garcon;
+import db.util.Banco;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,6 +24,7 @@ import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +44,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javax.imageio.ImageIO;
 import org.json.JSONObject;
 import util.ConsultaAPI;
 import util.MaskFieldUtil;
@@ -141,6 +149,7 @@ public class FXMLCadGarcomController implements Initializable {
     }
     private void estadoOriginal() 
     {
+        imgview_foto.setImage(null);
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         btconfirmar.setDisable(true);
@@ -203,7 +212,7 @@ public class FXMLCadGarcomController implements Initializable {
     }
 
     @FXML
-    private void clkbtalterar(ActionEvent event) 
+    private void clkbtalterar(ActionEvent event) throws IOException 
     {
         if (tabela.getSelectionModel().getSelectedItem() != null) 
         {
@@ -215,6 +224,14 @@ public class FXMLCadGarcomController implements Initializable {
             txcpf.setText(g.getCpf());
             txendereco.setText(g.getEnderco());
             txfone.setText(g.getFone());
+               DALGarcon dal = new DALGarcon();
+            InputStream img = dal.getFoto(g);
+            if(img != null)
+            {
+                BufferedImage bimg = ImageIO.read(img);
+                SwingFXUtils.toFXImage(bimg, null);
+                imgview_foto.setImage(SwingFXUtils.toFXImage(bimg, null));
+            }
             estadoEdicao();
         }
     }
@@ -226,7 +243,7 @@ public class FXMLCadGarcomController implements Initializable {
     }
 
     @FXML
-    private void clkBtConfirmar(ActionEvent event) 
+    private void clkBtConfirmar(ActionEvent event) throws IOException 
     {
         int cod;
         
@@ -245,12 +262,58 @@ public class FXMLCadGarcomController implements Initializable {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if(g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
         {
-            if(!dal.gravar(g))
+            if(dal.gravar(g))
+            {
+                if(imgview_foto.getImage() != null)
+                    {                    
+                        BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        byte[] imageInByte;
+                        ImageIO.write(bimg, "jpg", baos);
+                        baos.flush();
+                        imageInByte = baos.toByteArray();
+                        baos.close();
+                        //ERRO DE CODIGO
+                        InputStream in = new ByteArrayInputStream(imageInByte);
+                        if(dal.gravarFoto(g, in, baos.toByteArray().length))
+                            a.setContentText("Garçon gravado com sucesso");
+                        else
+                        {
+                            a.setContentText("Garçon gravado sem foto");
+                            a.showAndWait();
+                        }   
+                    }
+                else
+                    a.setContentText("NULL");
+            }
+            else
                a.setContentText("Problemas ao gravar!");                
         }
         else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
         {
-            if(!dal.alterar(g))
+            if(dal.alterar(g))
+            {
+                if(imgview_foto.getImage() != null)
+                    {                    
+                        BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        byte[] imageInByte;
+                        ImageIO.write(bimg, "jpg", baos);
+                        baos.flush();
+                        imageInByte = baos.toByteArray();
+                        baos.close();
+
+                        InputStream in = new ByteArrayInputStream(imageInByte);
+                        if(dal.gravarFoto(g, in, baos.toByteArray().length))
+                            a.setContentText("Garçon alterado com sucesso");
+                        else
+                        {
+                            a.setContentText("Garçon alterado sem foto");
+                            a.showAndWait();
+                        }   
+                    }
+            }
+              else
                 a.setContentText("Problemas ao alterar!");                
         }
         a.showAndWait();
