@@ -112,7 +112,14 @@ public class FXMLCadProduto2Controller implements Initializable {
         ft.play();        
     }
 
-    private void estadoOriginal() {
+    private void Original()
+    {
+        pnpesquisa.setDisable(true);
+       
+   
+    }
+    private void estadoOriginal() 
+    {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
         btconfirmar.setDisable(true);
@@ -159,15 +166,16 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkBtNovo(ActionEvent event) {
-
+    private void clkBtNovo(ActionEvent event) 
+    {
         estadoEdicao();
     }
 
     @FXML
     private void clkbtalterar(ActionEvent event) 
     {
-        if (tabela.getSelectionModel().getSelectedItem() != null) {
+        if (tabela.getSelectionModel().getSelectedItem() != null) 
+        {
             Produto p = (Produto) tabela.getSelectionModel().getSelectedItem();
             txcod.setText("" + p.getCod());
             txnome.setText(p.getNome());
@@ -178,7 +186,6 @@ public class FXMLCadProduto2Controller implements Initializable {
             cbunidade.getSelectionModel().select(0);// gambis
             cbcategoria.getSelectionModel().select(p.getCodc());
             cbunidade.getSelectionModel().select(p.getCodu());
-
         }
 
     }
@@ -197,7 +204,8 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkBtConfirmar(ActionEvent event) {
+    private void clkBtConfirmar(ActionEvent event) 
+    {
         int cod;
         try {
             cod = Integer.parseInt(txcod.getText());
@@ -212,16 +220,17 @@ public class FXMLCadProduto2Controller implements Initializable {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if (p.getCod() == 0) // novo cadastro
         {
-            if (dal.gravar(p)) {
-                a.setContentText("Gravado com Sucesso");
+            if (!dal.gravar(p)) {
+                 a.setContentText("Problemas ao Gravar");
             } else {
-                a.setContentText("Problemas ao Gravar");
+               
             }
         } else //alteração de cadastro
-        if (dal.alterar(p)) {
-            a.setContentText("Alterado com Sucesso");
-        } else {
+        if (!dal.alterar(p)) 
+        {
             a.setContentText("Problemas ao Alterar");
+        } else {
+            
         }
         a.showAndWait();
         estadoOriginal();
@@ -257,12 +266,12 @@ public class FXMLCadProduto2Controller implements Initializable {
     @FXML
     private void clkTabela(MouseEvent event) 
     {
-        if (tabela.getSelectionModel().getSelectedIndex() >= 0)
+        if (event.getClickCount() == 2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
-            
+            pndados.setDisable(true);
             btalterar.setDisable(false);
+            btnovo.setDisable(true);
             btapagar.setDisable(false);
-            pndados.setDisable((false));
             
             txcod.setText(""+tabela.getSelectionModel().getSelectedItem().getCod());
             txnome.setText(tabela.getSelectionModel().getSelectedItem().getNome());
@@ -270,10 +279,13 @@ public class FXMLCadProduto2Controller implements Initializable {
             txpreco.setText(""+tabela.getSelectionModel().getSelectedItem().getPreco());
             
             
-            //FAZER COMBOBOX
-            cbcategoria.setValue(tabela.getSelectionModel().getSelectedItem().getCodc());
-            cbunidade.setValue(tabela.getSelectionModel().getSelectedItem().getUnidade());
-
+            //FAZER COMBOBOX (GAMBIS COPIADA DO PROFESSOR)
+            cbcategoria.getSelectionModel().select(0);// gambis
+            cbunidade.getSelectionModel().select(0);// gambis
+            cbcategoria.getSelectionModel().select(tabela.getSelectionModel().getSelectedItem().getCodc());
+            cbunidade.getSelectionModel().select(tabela.getSelectionModel().getSelectedItem().getCodu());
+            
+            
         }
 
     }

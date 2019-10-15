@@ -5,15 +5,11 @@
  */
 package botecofx;
 
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import db.dal.DALCategoria;
 import db.dal.DALGarcon;
-import db.dal.DALProduto;
-import db.dal.DALUnidade;
-import db.entidades.Categoria;
 import db.entidades.Garcon;
-import db.entidades.Produto;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -21,10 +17,12 @@ import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -38,11 +36,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import org.json.JSONObject;
+import util.ConsultaAPI;
 import util.MaskFieldUtil;
 
 /**
@@ -126,13 +122,15 @@ public class FXMLCadGarcomController implements Initializable {
          colnome.setCellValueFactory(new PropertyValueFactory("nome"));
          colcpf.setCellValueFactory(new PropertyValueFactory("cpf"));
          colcep.setCellValueFactory(new PropertyValueFactory("cep"));
-         colendereco.setCellValueFactory(new PropertyValueFactory("endereco"));
+         colendereco.setCellValueFactory(new PropertyValueFactory("enderco"));
          colcidade.setCellValueFactory(new PropertyValueFactory("cidade"));
          coluf.setCellValueFactory(new PropertyValueFactory("uf"));
          colfone.setCellValueFactory(new PropertyValueFactory("fone"));
          MaskFieldUtil.cepField(txcep);
          MaskFieldUtil.foneField(txfone);
          MaskFieldUtil.cpfField(txcpf);
+         carregaTabela("");
+         estadoOriginal();
     }    
     private void fadeout() 
     {
@@ -150,6 +148,14 @@ public class FXMLCadGarcomController implements Initializable {
         btapagar.setDisable(true);
         btalterar.setDisable(true);
         btnovo.setDisable(false);
+        txcep.setDisable(true);
+        txcidade.setDisable(true);
+        txcod.setDisable(true);
+        txcpf.setDisable(true);
+        txendereco.setDisable(true);
+        txfone.setDisable(true);
+        txnome.setDisable(true);
+        txuf.setDisable(true);
 
         ObservableList<Node> componentes = pndados.getChildren(); //”limpa” os componentes
         for (Node n : componentes) {
@@ -172,14 +178,14 @@ public class FXMLCadGarcomController implements Initializable {
         btapagar.setDisable(true);
         btalterar.setDisable(true);
         txnome.requestFocus();
-        txcep.setDisable(true);
-        txcidade.setDisable(true);
-        txcod.setDisable(true);
-        txcpf.setDisable(true);
-        txendereco.setDisable(true);
-        txfone.setDisable(true);
-        txnome.setDisable(true);
-        txuf.setDisable(true);
+        txcep.setDisable(false);
+        txcidade.setDisable(false);
+        txcod.setDisable(false);
+        txcpf.setDisable(false);
+        txendereco.setDisable(false);
+        txfone.setDisable(false);
+        txnome.setDisable(false);
+        txuf.setDisable(false);
     }
 
     private void carregaTabela(String filtro) 
@@ -191,34 +197,68 @@ public class FXMLCadGarcomController implements Initializable {
         tabela.setItems(modelo);
     }
     @FXML
-    private void clkBtNovo(ActionEvent event) {
-    }
-
-    @FXML
-    private void clkbtalterar(ActionEvent event) {
-    }
-
-    @FXML
-    private void clkBtApagar(ActionEvent event) {
-    }
-
-    @FXML
-    private void clkBtConfirmar(ActionEvent event) {
-    }
-
-    @FXML
-    private void clkbtcancelar(ActionEvent event) 
+    private void clkBtNovo(ActionEvent event) 
     {
-        if (!pndados.isDisabled()) // encontra em estado de edição
+        estadoEdicao();
+    }
+
+    @FXML
+    private void clkbtalterar(ActionEvent event) 
+    {
+        if (tabela.getSelectionModel().getSelectedItem() != null) 
         {
-            estadoOriginal();
-        } else 
-        {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+            Garcon g = (Garcon) tabela.getSelectionModel().getSelectedItem();
+            txcod.setText(""+g.getCod());
+            txnome.setText(g.getNome());
+            txcep.setText(g.getCep());
+            txcidade.setText(g.getCidade());
+            txcpf.setText(g.getCpf());
+            txendereco.setText(g.getEnderco());
+            txfone.setText(g.getFone());
+            estadoEdicao();
         }
     }
 
+    @FXML
+    private void clkBtApagar(ActionEvent event) 
+    {
+        
+    }
+
+    @FXML
+    private void clkBtConfirmar(ActionEvent event) 
+    {
+        int cod;
+        
+        try
+        {
+            cod = Integer.parseInt(txcod.getText());
+        }
+        catch(Exception e)
+        {
+            cod = 0;
+        }
+        //VALIDAR TAMANHOS DOS TXBOX
+        
+        Garcon g = new Garcon (cod, txnome.getText(),txcpf.getText(),txcep.getText(),txendereco.getText(),txcidade.getText(),txuf.getText(),txfone.getText());
+        DALGarcon dal = new DALGarcon();
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        if(g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
+        {
+            if(!dal.gravar(g))
+               a.setContentText("Problemas ao gravar!");                
+        }
+        else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
+        {
+            if(!dal.alterar(g))
+                a.setContentText("Problemas ao alterar!");                
+        }
+        a.showAndWait();
+        estadoOriginal();
+        carregaTabela("");
+    }
+
+  
     @FXML
     private void clkTxPesquisa(KeyEvent event) 
     {
@@ -234,24 +274,25 @@ public class FXMLCadGarcomController implements Initializable {
     @FXML
     private void clkTabela(MouseEvent event) 
     {
-        if (tabela.getSelectionModel().getSelectedIndex() >= 0)
+        if (event.getClickCount() ==2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
-            
+            estadoEdicao();
             btalterar.setDisable(false);
             btapagar.setDisable(false);
-            pndados.setDisable((false));
-            
+            pndados.setDisable(true);
+            btnovo.setDisable(true);
+            btconfirmar.setDisable(true);            
             txcod.setText(""+tabela.getSelectionModel().getSelectedItem().getCod());
             txnome.setText(tabela.getSelectionModel().getSelectedItem().getNome());
             txcep.setText(tabela.getSelectionModel().getSelectedItem().getCep());
-            txcidade.setText(""+tabela.getSelectionModel().getSelectedItem().getCidade());
-            txcpf.setText(""+tabela.getSelectionModel().getSelectedItem().getCpf());
-            txendereco.setText(""+tabela.getSelectionModel().getSelectedItem().getEnderco());
-            txfone.setText(""+tabela.getSelectionModel().getSelectedItem().getFone());
-            txuf.setText(""+tabela.getSelectionModel().getSelectedItem().getUf());
+            txcidade.setText(tabela.getSelectionModel().getSelectedItem().getCidade());
+            txcpf.setText(tabela.getSelectionModel().getSelectedItem().getCpf());
+            txendereco.setText(tabela.getSelectionModel().getSelectedItem().getEnderco());
+            txfone.setText(tabela.getSelectionModel().getSelectedItem().getFone());
+            txuf.setText(tabela.getSelectionModel().getSelectedItem().getUf());  
             
-
         }
+        
     }
 
     @FXML
@@ -267,6 +308,41 @@ public class FXMLCadGarcomController implements Initializable {
         {
             img = new Image(arq.toURI().toString());
             imgview_foto.setImage(img);
+        }
+    }
+    @FXML
+    private void evtCep(KeyEvent event) 
+    {
+        if(txcep.getText().length() >= 8)
+        {
+            Task task = new Task() 
+            {
+                @Override
+                protected Object call() throws Exception 
+                {
+                    String sjson = ConsultaAPI.consultaCep(txcep.getText());
+                    JSONObject obj = new JSONObject(sjson);
+                    txcidade.setText(obj.getString("localidade"));
+                    txuf.setText(obj.getString("uf"));                    
+                    if(obj.getString("logradouro").length() >= 0)
+                        txendereco.setText(obj.getString("logradouro"));
+                   return null;
+                }
+            };
+            new Thread(task).start();                             
+        }            
+    }
+
+    @FXML
+    private void clkbtcancelarX(ActionEvent event) {
+        
+        if (!pndados.isDisabled()) // encontra em estado de edição
+        {
+            estadoOriginal();
+        }else 
+        {
+            FXMLPrincipalController.spnprincipal.setCenter(null);
+            FXMLPrincipalController.efeito(false);
         }
     }
     

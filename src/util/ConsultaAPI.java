@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import org.json.JSONObject;
 
 public class ConsultaAPI 
 {
@@ -32,5 +33,11 @@ public class ConsultaAPI
         }
         return dados.toString();
     }
-    
+    static public void main (String[] args)
+    {
+        String sjson = consultaCep("19050040");   
+        JSONObject obj = new JSONObject(sjson);
+        System.out.println(sjson);
+        System.out.println(obj.getString("logradouro").length());
+    }
 }

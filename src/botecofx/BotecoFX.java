@@ -36,7 +36,8 @@ public class BotecoFX extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         
 //        String cep="19053694";
 //        String jsonresult = ConsultaAPI.consultaCep(cep);
