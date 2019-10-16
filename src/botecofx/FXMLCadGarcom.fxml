@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane fx:id="painel" dividerPositions="0.5863377609108159" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="596.0" prefWidth="991.0" stylesheets="@css/jfoenix-components.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="botecofx.FXMLCadGarcomController">
+<SplitPane fx:id="painel" dividerPositions="0.5863377609108159" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="596.0" prefWidth="991.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="botecofx.FXMLCadGarcomController">
    <items>
       <VBox prefHeight="290.0" prefWidth="696.0">
          <children>
@@ -100,7 +100,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="43.0" prefWidth="696.0" spacing="40.0" style="-fx-background-color: #DDDDDD;">
                <children>
-                  <JFXTextField fx:id="txpesquisa" onKeyTyped="#clkTxPesquisa" prefHeight="25.0" prefWidth="503.0" promptText="Informe o nome do produto" />
+                  <JFXTextField fx:id="txpesquisa" onKeyTyped="#clkTxPesquisa" prefHeight="25.0" prefWidth="503.0" promptText="Informe o nome do garcon" />
                   <JFXButton fx:id="btpesquisar" onAction="#clkBtPesquisar" text="Pesquisar">
                      <font>
                         <Font name="Century Gothic" size="12.0" />

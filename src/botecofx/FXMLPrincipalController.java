@@ -27,99 +27,107 @@ import javafx.util.Duration;
  *
  * @author Aluno
  */
-public class FXMLPrincipalController implements Initializable {
-    
+public class FXMLPrincipalController implements Initializable
+{
+
     //dados estáticos
-    public static BorderPane spnprincipal=null;
-    
-    @FXML
-    private BorderPane pnprincipal;
-        
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        spnprincipal=pnprincipal;
-    }    
+    public static BorderPane spnprincipal = null;
 
     @FXML
-    private void clkCadProduto(ActionEvent event) {
-        
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadProduto2.fxml"));
-            efeito(true);
-            pnprincipal.setCenter(root);
-            
-            
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        
+    private BorderPane pnprincipal;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        spnprincipal = pnprincipal;
     }
 
     @FXML
-    private void clkLink(ActionEvent event) {
-        try 
+    private void clkCadProduto(ActionEvent event)
+    {
+
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadProduto2.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
+
+    }
+
+    @FXML
+    private void clkLink(ActionEvent event)
+    {
+        try
         {
             Desktop.getDesktop().browse(new URI("http://unoeste.br"));
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             Logger.getLogger(FXMLPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
-    private void clkMostrarComandas(ActionEvent event) {
-        try 
+    private void clkMostrarComandas(ActionEvent event)
+    {
+        try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLPainelComanda.fxml"));
             pnprincipal.setCenter(root);
-            
-        } catch (IOException ex) {
+
+        } catch (IOException ex)
+        {
             System.out.println(ex);
         }
     }
 
     @FXML
-    private void clkNovaComanda(ActionEvent event) 
+    private void clkNovaComanda(ActionEvent event)
     {
-        
+
     }
-    
+
     public static void efeito(boolean on)
     {
-        if(on)
+        if (on)
         {
 //            FadeTransition ft = new FadeTransition(Duration.millis(500), spnprincipal);
 //            ft.setFromValue(1.0);
 //            ft.setToValue(0.5);
 //            ft.play(); 
-              spnprincipal.setStyle("-fx-background-image: url('icons/textura2.png');");
+            spnprincipal.setStyle("-fx-background-image: url('icons/textura2.png');");
 
-        }
-        else
+        } else
+        {
             spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");
-            
+        }
+
     }
 
     @FXML
-    private void clkGoToHome(ActionEvent event) 
+    private void clkGoToHome(ActionEvent event)
     {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+        FXMLPrincipalController.spnprincipal.setCenter(null);
+        FXMLPrincipalController.efeito(false);
     }
 
     @FXML
-    private void clkCadGarcom(ActionEvent event) 
+    private void clkCadGarcom(ActionEvent event)
     {
-        try 
+        try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadGarcom.fxml"));
             efeito(true);
             pnprincipal.setCenter(root);
-            
-            
-        } catch (IOException ex) {
+
+        } catch (IOException ex)
+        {
             System.out.println(ex);
         }
     }
-    
+
 }

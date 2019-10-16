@@ -5,7 +5,6 @@
  */
 package botecofx;
 
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALGarcon;
@@ -30,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -54,7 +54,8 @@ import util.MaskFieldUtil;
  *
  * @author Aluno
  */
-public class FXMLCadGarcomController implements Initializable {
+public class FXMLCadGarcomController implements Initializable
+{
 
     @FXML
     private SplitPane painel;
@@ -116,38 +117,42 @@ public class FXMLCadGarcomController implements Initializable {
     private JFXButton btnFoto;
 
     static public File arq = null;
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) 
+    public void initialize(URL url, ResourceBundle rb)
     {
         // TODO
-         fadeout();
-         colcod.setCellValueFactory(new PropertyValueFactory("cod"));
-         colnome.setCellValueFactory(new PropertyValueFactory("nome"));
-         colcpf.setCellValueFactory(new PropertyValueFactory("cpf"));
-         colcep.setCellValueFactory(new PropertyValueFactory("cep"));
-         colendereco.setCellValueFactory(new PropertyValueFactory("enderco"));
-         colcidade.setCellValueFactory(new PropertyValueFactory("cidade"));
-         coluf.setCellValueFactory(new PropertyValueFactory("uf"));
-         colfone.setCellValueFactory(new PropertyValueFactory("fone"));
-         MaskFieldUtil.cepField(txcep);
-         MaskFieldUtil.foneField(txfone);
-         MaskFieldUtil.cpfField(txcpf);
-         carregaTabela("");
-         estadoOriginal();
-    }    
-    private void fadeout() 
+        fadeout();
+        colcod.setCellValueFactory(new PropertyValueFactory("cod"));
+        colnome.setCellValueFactory(new PropertyValueFactory("nome"));
+        colcpf.setCellValueFactory(new PropertyValueFactory("cpf"));
+        colcep.setCellValueFactory(new PropertyValueFactory("cep"));
+        colendereco.setCellValueFactory(new PropertyValueFactory("enderco"));
+        colcidade.setCellValueFactory(new PropertyValueFactory("cidade"));
+        coluf.setCellValueFactory(new PropertyValueFactory("uf"));
+        colfone.setCellValueFactory(new PropertyValueFactory("fone"));
+        MaskFieldUtil.cepField(txcep);
+        MaskFieldUtil.foneField(txfone);
+        MaskFieldUtil.cpfField(txcpf);
+        carregaTabela("");
+        estadoOriginal();
+    }
+
+    private void fadeout()
     {
         FadeTransition ft = new FadeTransition(Duration.millis(1000), painel);
         ft.setFromValue(0);
         ft.setToValue(1);
         ft.play();
     }
-    private void estadoOriginal() 
+
+    private void estadoOriginal()
     {
         imgview_foto.setImage(null);
         pnpesquisa.setDisable(false);
@@ -167,19 +172,22 @@ public class FXMLCadGarcomController implements Initializable {
         txuf.setDisable(true);
 
         ObservableList<Node> componentes = pndados.getChildren(); //”limpa” os componentes
-        for (Node n : componentes) {
+        for (Node n : componentes)
+        {
             if (n instanceof TextInputControl) // textfield, textarea e htmleditor
             {
                 ((TextInputControl) n).setText("");
             }
-            if (n instanceof ComboBox) {
+            if (n instanceof ComboBox)
+            {
                 ((ComboBox) n).getItems().clear();
             }
         }
         carregaTabela("");
     }
 
-    private void estadoEdicao() {     // carregar os componentes da tela (listbox, combobox, ...)
+    private void estadoEdicao()
+    {     // carregar os componentes da tela (listbox, combobox, ...)
         // p.e. : carregaEstados();
         pnpesquisa.setDisable(true);
         pndados.setDisable(false);
@@ -197,7 +205,7 @@ public class FXMLCadGarcomController implements Initializable {
         txuf.setDisable(false);
     }
 
-    private void carregaTabela(String filtro) 
+    private void carregaTabela(String filtro)
     {
         DALGarcon dal = new DALGarcon();
         List<Garcon> res = dal.get(filtro);
@@ -205,28 +213,29 @@ public class FXMLCadGarcomController implements Initializable {
         modelo = FXCollections.observableArrayList(res);
         tabela.setItems(modelo);
     }
+
     @FXML
-    private void clkBtNovo(ActionEvent event) 
+    private void clkBtNovo(ActionEvent event)
     {
         estadoEdicao();
     }
 
     @FXML
-    private void clkbtalterar(ActionEvent event) throws IOException 
+    private void clkbtalterar(ActionEvent event) throws IOException
     {
-        if (tabela.getSelectionModel().getSelectedItem() != null) 
+        if (tabela.getSelectionModel().getSelectedItem() != null)
         {
             Garcon g = (Garcon) tabela.getSelectionModel().getSelectedItem();
-            txcod.setText(""+g.getCod());
+            txcod.setText("" + g.getCod());
             txnome.setText(g.getNome());
             txcep.setText(g.getCep());
             txcidade.setText(g.getCidade());
             txcpf.setText(g.getCpf());
             txendereco.setText(g.getEnderco());
             txfone.setText(g.getFone());
-               DALGarcon dal = new DALGarcon();
+            DALGarcon dal = new DALGarcon();
             InputStream img = dal.getFoto(g);
-            if(img != null)
+            if (img != null)
             {
                 BufferedImage bimg = ImageIO.read(img);
                 SwingFXUtils.toFXImage(bimg, null);
@@ -237,177 +246,190 @@ public class FXMLCadGarcomController implements Initializable {
     }
 
     @FXML
-    private void clkBtApagar(ActionEvent event) 
+    private void clkBtApagar(ActionEvent event)
     {
-        
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setContentText("Confirma a exclusão?");
+        if (a.showAndWait().get() == ButtonType.OK)
+        {
+            DALGarcon dal = new DALGarcon();
+            Garcon g;
+            g = tabela.getSelectionModel().getSelectedItem();
+            dal.apagar(g);
+            carregaTabela("");
+            estadoOriginal();
+            a.setContentText("Exclusao com sucesso!");
+        }
     }
 
     @FXML
-    private void clkBtConfirmar(ActionEvent event) throws IOException 
+    private void clkBtConfirmar(ActionEvent event) throws IOException
     {
         int cod;
-        
+
         try
         {
             cod = Integer.parseInt(txcod.getText());
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             cod = 0;
         }
         //VALIDAR TAMANHOS DOS TXBOX
-        
-        Garcon g = new Garcon (cod, txnome.getText(),txcpf.getText(),txcep.getText(),txendereco.getText(),txcidade.getText(),txuf.getText(),txfone.getText());
+
+        Garcon g = new Garcon(cod, txnome.getText(), txcpf.getText(), txcep.getText(), txendereco.getText(), txcidade.getText(), txuf.getText(), txfone.getText());
         DALGarcon dal = new DALGarcon();
         Alert a = new Alert(Alert.AlertType.INFORMATION);
-        if(g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
+        if (g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
         {
-            if(dal.gravar(g))
+            if (dal.gravar(g))
             {
-                if(imgview_foto.getImage() != null)
-                    {                    
-                        BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        byte[] imageInByte;
-                        ImageIO.write(bimg, "jpg", baos);
-                        baos.flush();
-                        imageInByte = baos.toByteArray();
-                        baos.close();
-                        //ERRO DE CODIGO
-                        InputStream in = new ByteArrayInputStream(imageInByte);
-                        if(dal.gravarFoto(g, in, baos.toByteArray().length))
-                            a.setContentText("Garçon gravado com sucesso");
-                        else
-                        {
-                            a.setContentText("Garçon gravado sem foto");
-                            a.showAndWait();
-                        }   
+                if (imgview_foto.getImage() != null)
+                {
+                    BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] imageInByte;
+                    ImageIO.write(bimg, "jpg", baos);
+                    baos.flush();
+                    imageInByte = baos.toByteArray();
+                    baos.close();
+                    g.setCod(Banco.getCon().getMaxPK("garcon", "gar_id")); // PEGAR O ID PARA NAO DAR ERRO
+                    InputStream in = new ByteArrayInputStream(imageInByte);
+                    if (!dal.gravarFoto(g, in, baos.toByteArray().length))
+                    {
+                        a.setContentText("Garçon gravado sem foto");
+                        a.showAndWait();
                     }
-                else
-                    a.setContentText("NULL");
-            }
-            else
-               a.setContentText("Problemas ao gravar!");                
-        }
-        else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
-        {
-            if(dal.alterar(g))
+                } else
+                {
+                    a.setContentText("Garçon gravado sem foto");
+                }
+            } else
             {
-                if(imgview_foto.getImage() != null)
-                    {                    
-                        BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        byte[] imageInByte;
-                        ImageIO.write(bimg, "jpg", baos);
-                        baos.flush();
-                        imageInByte = baos.toByteArray();
-                        baos.close();
+                a.setContentText("Problemas ao gravar!");
+            }
+        } else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
+        {
+            if (dal.alterar(g))
+            {
+                if (imgview_foto.getImage() != null)
+                {
+                    BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] imageInByte;
+                    ImageIO.write(bimg, "jpg", baos);
+                    baos.flush();
+                    imageInByte = baos.toByteArray();
+                    baos.close();
 
-                        InputStream in = new ByteArrayInputStream(imageInByte);
-                        if(dal.gravarFoto(g, in, baos.toByteArray().length))
-                            a.setContentText("Garçon alterado com sucesso");
-                        else
-                        {
-                            a.setContentText("Garçon alterado sem foto");
-                            a.showAndWait();
-                        }   
+                    InputStream in = new ByteArrayInputStream(imageInByte);
+                    if (dal.gravarFoto(g, in, baos.toByteArray().length))
+                    {
+                        a.setContentText("Garçon alterado com sucesso");
+                    } else
+                    {
+                        a.setContentText("Garçon alterado sem foto");
+                        a.showAndWait();
                     }
+                }
+            } else
+            {
+                a.setContentText("Problemas ao alterar!");
             }
-              else
-                a.setContentText("Problemas ao alterar!");                
         }
         a.showAndWait();
         estadoOriginal();
         carregaTabela("");
     }
 
-  
     @FXML
-    private void clkTxPesquisa(KeyEvent event) 
+    private void clkTxPesquisa(KeyEvent event)
     {
-        carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
+        carregaTabela("upper(gar_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkBtPesquisar(ActionEvent event) 
+    private void clkBtPesquisar(ActionEvent event)
     {
-        carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
+        carregaTabela("upper(gar_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkTabela(MouseEvent event) 
+    private void clkTabela(MouseEvent event)
     {
-        if (event.getClickCount() ==2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
+        if (event.getClickCount() == 2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
             estadoEdicao();
             btalterar.setDisable(false);
             btapagar.setDisable(false);
             pndados.setDisable(true);
             btnovo.setDisable(true);
-            btconfirmar.setDisable(true);            
-            txcod.setText(""+tabela.getSelectionModel().getSelectedItem().getCod());
+            btconfirmar.setDisable(true);
+            txcod.setText("" + tabela.getSelectionModel().getSelectedItem().getCod());
             txnome.setText(tabela.getSelectionModel().getSelectedItem().getNome());
             txcep.setText(tabela.getSelectionModel().getSelectedItem().getCep());
             txcidade.setText(tabela.getSelectionModel().getSelectedItem().getCidade());
             txcpf.setText(tabela.getSelectionModel().getSelectedItem().getCpf());
             txendereco.setText(tabela.getSelectionModel().getSelectedItem().getEnderco());
             txfone.setText(tabela.getSelectionModel().getSelectedItem().getFone());
-            txuf.setText(tabela.getSelectionModel().getSelectedItem().getUf());  
-            
+            txuf.setText(tabela.getSelectionModel().getSelectedItem().getUf());
+
         }
-        
+
     }
 
     @FXML
-    private void clkCarregarImagem(ActionEvent event) 
+    private void clkCarregarImagem(ActionEvent event)
     {
         FileChooser fc = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JPEG & JPG images ", "*.jpeg","*.jpg");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JPEG & JPG images ", "*.jpeg", "*.jpg");
         fc.getExtensionFilters().add(extFilter);
         fc.setSelectedExtensionFilter(extFilter);
         arq = fc.showOpenDialog(null);
         Image img;
-        if (arq != null) 
+        if (arq != null)
         {
             img = new Image(arq.toURI().toString());
             imgview_foto.setImage(img);
         }
     }
+
     @FXML
-    private void evtCep(KeyEvent event) 
+    private void evtCep(KeyEvent event)
     {
-        if(txcep.getText().length() >= 8)
+        if (txcep.getText().length() >= 8)
         {
-            Task task = new Task() 
+            Task task = new Task()
             {
                 @Override
-                protected Object call() throws Exception 
+                protected Object call() throws Exception
                 {
                     String sjson = ConsultaAPI.consultaCep(txcep.getText());
                     JSONObject obj = new JSONObject(sjson);
                     txcidade.setText(obj.getString("localidade"));
-                    txuf.setText(obj.getString("uf"));                    
-                    if(obj.getString("logradouro").length() >= 0)
+                    txuf.setText(obj.getString("uf"));
+                    if (obj.getString("logradouro").length() >= 0)
+                    {
                         txendereco.setText(obj.getString("logradouro"));
-                   return null;
+                    }
+                    return null;
                 }
             };
-            new Thread(task).start();                             
-        }            
+            new Thread(task).start();
+        }
     }
 
     @FXML
-    private void clkbtcancelarX(ActionEvent event) {
-        
+    private void clkbtcancelarX(ActionEvent event)
+    {
+
         if (!pndados.isDisabled()) // encontra em estado de edição
         {
             estadoOriginal();
-        }else 
+        } else
         {
             FXMLPrincipalController.spnprincipal.setCenter(null);
             FXMLPrincipalController.efeito(false);
         }
     }
-    
-    
+
 }

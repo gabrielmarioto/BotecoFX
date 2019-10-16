@@ -18,16 +18,18 @@ import javax.swing.JOptionPane;
  *
  * @author Aluno
  */
-public class BotecoFX extends Application {
-    
+public class BotecoFX extends Application
+{
+
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception
+    {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
-        
+
         stage.setMaximized(true);
         stage.setTitle("Boteco FX");
         stage.show();
@@ -36,19 +38,20 @@ public class BotecoFX extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
-        
+
 //        String cep="19053694";
 //        String jsonresult = ConsultaAPI.consultaCep(cep);
 //        System.out.println(jsonresult);
-        
-        if(Banco.conectar())
-           launch(args);
-        else
-        {  JOptionPane.showMessageDialog(null, "Erro: "+Banco.getCon().getMensagemErro());
-           System.exit(0);
+        if (Banco.conectar())
+        {
+            launch(args);
+        } else
+        {
+            JOptionPane.showMessageDialog(null, "Erro: " + Banco.getCon().getMensagemErro());
+            System.exit(0);
         }
     }
-    
+
 }

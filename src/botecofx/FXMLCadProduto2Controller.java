@@ -48,7 +48,8 @@ import javafx.util.Duration;
  *
  * @author Aluno
  */
-public class FXMLCadProduto2Controller implements Initializable {
+public class FXMLCadProduto2Controller implements Initializable
+{
 
     @FXML
     private AnchorPane pndados;
@@ -91,9 +92,9 @@ public class FXMLCadProduto2Controller implements Initializable {
     @FXML
     private SplitPane painel;
 
-
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         // transição para abrir o painel
         fadeout();
         //preparar as colunas
@@ -104,21 +105,21 @@ public class FXMLCadProduto2Controller implements Initializable {
         estadoOriginal();
     }
 
-    private void fadeout() 
+    private void fadeout()
     {
         FadeTransition ft = new FadeTransition(Duration.millis(1000), painel);
         ft.setFromValue(0);
         ft.setToValue(1);
-        ft.play();        
+        ft.play();
     }
 
     private void Original()
     {
         pnpesquisa.setDisable(true);
-       
-   
+
     }
-    private void estadoOriginal() 
+
+    private void estadoOriginal()
     {
         pnpesquisa.setDisable(false);
         pndados.setDisable(true);
@@ -129,12 +130,14 @@ public class FXMLCadProduto2Controller implements Initializable {
         btnovo.setDisable(false);
 
         ObservableList<Node> componentes = pndados.getChildren(); //”limpa” os componentes
-        for (Node n : componentes) {
+        for (Node n : componentes)
+        {
             if (n instanceof TextInputControl) // textfield, textarea e htmleditor
             {
                 ((TextInputControl) n).setText("");
             }
-            if (n instanceof ComboBox) {
+            if (n instanceof ComboBox)
+            {
                 ((ComboBox) n).getItems().clear();
             }
         }
@@ -142,7 +145,8 @@ public class FXMLCadProduto2Controller implements Initializable {
         carregaTabela("");
     }
 
-    private void estadoEdicao() {     // carregar os componentes da tela (listbox, combobox, ...)
+    private void estadoEdicao()
+    {     // carregar os componentes da tela (listbox, combobox, ...)
         // p.e. : carregaEstados();
         pnpesquisa.setDisable(true);
         pndados.setDisable(false);
@@ -152,7 +156,7 @@ public class FXMLCadProduto2Controller implements Initializable {
         txnome.requestFocus();
     }
 
-    private void carregaTabela(String filtro) 
+    private void carregaTabela(String filtro)
     {
         DALProduto dal = new DALProduto();
         List<Produto> res = dal.get(filtro);
@@ -166,15 +170,15 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkBtNovo(ActionEvent event) 
+    private void clkBtNovo(ActionEvent event)
     {
         estadoEdicao();
     }
 
     @FXML
-    private void clkbtalterar(ActionEvent event) 
+    private void clkbtalterar(ActionEvent event)
     {
-        if (tabela.getSelectionModel().getSelectedItem() != null) 
+        if (tabela.getSelectionModel().getSelectedItem() != null)
         {
             Produto p = (Produto) tabela.getSelectionModel().getSelectedItem();
             txcod.setText("" + p.getCod());
@@ -191,10 +195,12 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkBtApagar(ActionEvent event) {
+    private void clkBtApagar(ActionEvent event)
+    {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setContentText("Confirma a exclusão");
-        if (a.showAndWait().get() == ButtonType.OK) {
+        a.setContentText("Confirma a exclusão?");
+        if (a.showAndWait().get() == ButtonType.OK)
+        {
             DALProduto dal = new DALProduto();
             Produto p;
             p = tabela.getSelectionModel().getSelectedItem();
@@ -204,12 +210,14 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkBtConfirmar(ActionEvent event) 
+    private void clkBtConfirmar(ActionEvent event)
     {
         int cod;
-        try {
+        try
+        {
             cod = Integer.parseInt(txcod.getText());
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             cod = 0;
         }
         Produto p = new Produto(cod, cbcategoria.getValue(), cbunidade.getValue(),
@@ -220,29 +228,32 @@ public class FXMLCadProduto2Controller implements Initializable {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         if (p.getCod() == 0) // novo cadastro
         {
-            if (!dal.gravar(p)) {
-                 a.setContentText("Problemas ao Gravar");
-            } else {
-               
+            if (!dal.gravar(p))
+            {
+                a.setContentText("Problemas ao Gravar");
+            } else
+            {
+
             }
         } else //alteração de cadastro
-        if (!dal.alterar(p)) 
+        if (!dal.alterar(p))
         {
             a.setContentText("Problemas ao Alterar");
-        } else {
-            
+        } else
+        {
+
         }
         a.showAndWait();
         estadoOriginal();
     }
 
     @FXML
-    private void clkbtcancelar(ActionEvent event) 
+    private void clkbtcancelar(ActionEvent event)
     {
         if (!pndados.isDisabled()) // encontra em estado de edição
         {
             estadoOriginal();
-        } else 
+        } else
         {
             FXMLPrincipalController.spnprincipal.setCenter(null);
             FXMLPrincipalController.efeito(false);
@@ -252,19 +263,19 @@ public class FXMLCadProduto2Controller implements Initializable {
     }
 
     @FXML
-    private void clkTxPesquisa(KeyEvent event) 
+    private void clkTxPesquisa(KeyEvent event)
     {
         carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkBtPesquisar(ActionEvent event) 
+    private void clkBtPesquisar(ActionEvent event)
     {
         carregaTabela("upper(prod_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
 
     @FXML
-    private void clkTabela(MouseEvent event) 
+    private void clkTabela(MouseEvent event)
     {
         if (event.getClickCount() == 2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
@@ -272,20 +283,18 @@ public class FXMLCadProduto2Controller implements Initializable {
             btalterar.setDisable(false);
             btnovo.setDisable(true);
             btapagar.setDisable(false);
-            
-            txcod.setText(""+tabela.getSelectionModel().getSelectedItem().getCod());
+
+            txcod.setText("" + tabela.getSelectionModel().getSelectedItem().getCod());
             txnome.setText(tabela.getSelectionModel().getSelectedItem().getNome());
             txdescr.setText(tabela.getSelectionModel().getSelectedItem().getDesc());
-            txpreco.setText(""+tabela.getSelectionModel().getSelectedItem().getPreco());
-            
-            
+            txpreco.setText("" + tabela.getSelectionModel().getSelectedItem().getPreco());
+
             //FAZER COMBOBOX (GAMBIS COPIADA DO PROFESSOR)
             cbcategoria.getSelectionModel().select(0);// gambis
             cbunidade.getSelectionModel().select(0);// gambis
             cbcategoria.getSelectionModel().select(tabela.getSelectionModel().getSelectedItem().getCodc());
             cbunidade.getSelectionModel().select(tabela.getSelectionModel().getSelectedItem().getCodu());
-            
-            
+
         }
 
     }
