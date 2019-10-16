@@ -40,6 +40,7 @@ public class FXMLPrincipalController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         spnprincipal = pnprincipal;
+      //spnprincipal.setStyle("-fx-background-position: center;");
     }
 
     @FXML
@@ -99,7 +100,7 @@ public class FXMLPrincipalController implements Initializable
 //            ft.setFromValue(1.0);
 //            ft.setToValue(0.5);
 //            ft.play(); 
-            spnprincipal.setStyle("-fx-background-image: url('icons/textura2.png');");
+            spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");
 
         } else
         {

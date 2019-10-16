@@ -223,17 +223,10 @@ public class FXMLCadGarcomController implements Initializable
     @FXML
     private void clkbtalterar(ActionEvent event) throws IOException
     {
+        DALGarcon dal = new DALGarcon();
         if (tabela.getSelectionModel().getSelectedItem() != null)
         {
             Garcon g = (Garcon) tabela.getSelectionModel().getSelectedItem();
-            txcod.setText("" + g.getCod());
-            txnome.setText(g.getNome());
-            txcep.setText(g.getCep());
-            txcidade.setText(g.getCidade());
-            txcpf.setText(g.getCpf());
-            txendereco.setText(g.getEnderco());
-            txfone.setText(g.getFone());
-            DALGarcon dal = new DALGarcon();
             InputStream img = dal.getFoto(g);
             if (img != null)
             {
@@ -241,6 +234,14 @@ public class FXMLCadGarcomController implements Initializable
                 SwingFXUtils.toFXImage(bimg, null);
                 imgview_foto.setImage(SwingFXUtils.toFXImage(bimg, null));
             }
+            txcod.setText("" + g.getCod());
+            txnome.setText(g.getNome());
+            txcep.setText(g.getCep());
+            txcidade.setText(g.getCidade());
+            txcpf.setText(g.getCpf());
+            txendereco.setText(g.getEnderco());
+            txfone.setText(g.getFone());          
+            
             estadoEdicao();
         }
     }
@@ -354,7 +355,7 @@ public class FXMLCadGarcomController implements Initializable
     }
 
     @FXML
-    private void clkTabela(MouseEvent event)
+    private void clkTabela(MouseEvent event) throws IOException
     {
         if (event.getClickCount() == 2 && tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
@@ -372,7 +373,16 @@ public class FXMLCadGarcomController implements Initializable
             txendereco.setText(tabela.getSelectionModel().getSelectedItem().getEnderco());
             txfone.setText(tabela.getSelectionModel().getSelectedItem().getFone());
             txuf.setText(tabela.getSelectionModel().getSelectedItem().getUf());
-
+            
+            DALGarcon dal = new DALGarcon();
+            Garcon g = (Garcon) tabela.getSelectionModel().getSelectedItem();
+            InputStream img = dal.getFoto(g);
+            if (img != null)
+            {
+                BufferedImage bimg = ImageIO.read(img);
+                SwingFXUtils.toFXImage(bimg, null);
+                imgview_foto.setImage(SwingFXUtils.toFXImage(bimg, null));
+            }
         }
 
     }
