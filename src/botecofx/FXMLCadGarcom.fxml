@@ -13,7 +13,7 @@
 
 <SplitPane fx:id="painel" dividerPositions="0.5863377609108159" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="596.0" prefWidth="991.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="botecofx.FXMLCadGarcomController">
    <items>
-      <VBox prefHeight="290.0" prefWidth="696.0">
+      <VBox prefHeight="362.0" prefWidth="989.0">
          <children>
             <HBox alignment="CENTER" prefHeight="43.0" prefWidth="696.0" spacing="50.0" style="-fx-background-color: #4c4c4c;">
                <children>
@@ -44,7 +44,7 @@
                   </JFXButton>
                </children>
             </HBox>
-            <AnchorPane fx:id="pndados" prefHeight="265.0" prefWidth="696.0" style="-fx-background-color: white;">
+            <AnchorPane fx:id="pndados" prefHeight="302.0" prefWidth="989.0" style="-fx-background-color: white;">
                <children>
                   <JFXTextField fx:id="txcod" focusColor="ORANGE" labelFloat="true" layoutX="14.0" layoutY="22.0" prefHeight="25.0" prefWidth="88.0" promptText="Código">
                      <font>
@@ -56,32 +56,32 @@
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txcpf" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="67.0" prefHeight="25.0" prefWidth="604.0" promptText="CPF">
+                  <JFXTextField fx:id="txcpf" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="72.0" prefHeight="25.0" prefWidth="604.0" promptText="CPF">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txcep" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="108.0" onKeyTyped="#evtCep" prefHeight="25.0" prefWidth="604.0" promptText="CEP">
+                  <JFXTextField fx:id="txcep" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="118.0" onKeyTyped="#evtCep" prefHeight="25.0" prefWidth="604.0" promptText="CEP">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txendereco" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="146.0" prefHeight="25.0" prefWidth="604.0" promptText="Endereço">
+                  <JFXTextField fx:id="txendereco" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="164.0" prefHeight="25.0" prefWidth="604.0" promptText="Endereço">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txcidade" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="186.0" prefHeight="25.0" prefWidth="604.0" promptText="Cidade">
+                  <JFXTextField fx:id="txcidade" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="208.0" prefHeight="25.0" prefWidth="604.0" promptText="Cidade">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txuf" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="229.0" prefHeight="25.0" prefWidth="196.0" promptText="UF">
+                  <JFXTextField fx:id="txuf" focusColor="ORANGE" labelFloat="true" layoutX="13.0" layoutY="253.0" prefHeight="25.0" prefWidth="196.0" promptText="UF">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="txfone" focusColor="ORANGE" labelFloat="true" layoutX="233.0" layoutY="229.0" prefHeight="25.0" prefWidth="383.0" promptText="Fone">
+                  <JFXTextField fx:id="txfone" focusColor="ORANGE" labelFloat="true" layoutX="233.0" layoutY="253.0" prefHeight="25.0" prefWidth="383.0" promptText="Fone">
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
@@ -96,7 +96,7 @@
             </AnchorPane>
          </children>
       </VBox>
-      <VBox fx:id="pnpesquisa" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="pnpesquisa" maxHeight="250.0" minHeight="250.0" prefHeight="250.0" prefWidth="989.0">
          <children>
             <HBox alignment="CENTER" prefHeight="43.0" prefWidth="696.0" spacing="40.0" style="-fx-background-color: #DDDDDD;">
                <children>

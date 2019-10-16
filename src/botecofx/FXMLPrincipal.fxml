@@ -40,6 +40,7 @@
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                 <Button minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkCadProduto" style="-fx-background-image: url('icons/hamburger.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
+                  <Button minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkCadGarcom" style="-fx-background-image: url('icons/garcon.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
                   <Button layoutX="10.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkMostrarComandas" style="-fx-background-image: url('icons/cart.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
                   <Button layoutX="38.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkGoToHome" style="-fx-background-image: url('icons/home.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
                   <Button layoutX="66.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" style="-fx-background-image: url('icons/help.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
