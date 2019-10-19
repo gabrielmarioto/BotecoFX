@@ -44,6 +44,7 @@
                   <Button layoutX="10.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkMostrarComandas" style="-fx-background-image: url('icons/cart.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
                   <Button layoutX="38.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkGoToHome" style="-fx-background-image: url('icons/home.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
                   <Button layoutX="66.0" layoutY="13.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" style="-fx-background-image: url('icons/help.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
+                  <Button minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#clkFechar" style="-fx-background-image: url('icons/close.png'); -fx-background-position: center center; -fx-background-repeat: no-repeat; -fx-background-color: transparent;" />
               </items>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -32,6 +33,7 @@ public class BotecoFX extends Application
 
         stage.setMaximized(true);
         stage.setTitle("Boteco FX");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/hamburger.png"))); // SETAR ICONE NA JANELA
         stage.show();
     }
 

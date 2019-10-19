@@ -131,4 +131,10 @@ public class FXMLPrincipalController implements Initializable
         }
     }
 
+    @FXML
+    private void clkFechar(ActionEvent event) 
+    {
+        System.exit(0);
+    }
+
 }
