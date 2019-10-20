@@ -100,7 +100,8 @@ public class FXMLPrincipalController implements Initializable
 //            ft.setFromValue(1.0);
 //            ft.setToValue(0.5);
 //            ft.play(); 
-            spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");
+            spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");           
+           // spnprincipal.setStyle("css/jfoenix-components");    
 
         } else
         {
@@ -135,6 +136,36 @@ public class FXMLPrincipalController implements Initializable
     private void clkFechar(ActionEvent event) 
     {
         System.exit(0);
+    }
+
+    @FXML
+    private void clkCadCategoria(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadCategoria.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
+    }
+
+    @FXML
+    private void clkCadUnidade(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadUnidade.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
     }
 
 }

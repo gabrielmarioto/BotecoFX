@@ -113,12 +113,6 @@ public class FXMLCadProduto2Controller implements Initializable
         ft.play();
     }
 
-    private void Original()
-    {
-        pnpesquisa.setDisable(true);
-
-    }
-
     private void estadoOriginal()
     {
         pnpesquisa.setDisable(false);
@@ -213,6 +207,8 @@ public class FXMLCadProduto2Controller implements Initializable
     private void clkBtConfirmar(ActionEvent event)
     {
         int cod;
+        Produto p = null;
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
         try
         {
             cod = Integer.parseInt(txcod.getText());
@@ -220,31 +216,59 @@ public class FXMLCadProduto2Controller implements Initializable
         {
             cod = 0;
         }
-        Produto p = new Produto(cod, cbcategoria.getValue(), cbunidade.getValue(),
-                txnome.getText(),
-                Double.parseDouble(txpreco.getText().replace(".", "").replace(",", ".")),
-                txdescr.getText());
-        DALProduto dal = new DALProduto();
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        if (p.getCod() == 0) // novo cadastro
+        if (txnome.getText().length() > 0)
         {
-            if (!dal.gravar(p))
+            if (txdescr.getText().length() > 0)
             {
-                a.setContentText("Problemas ao Gravar");
+                if (txpreco.getText().length() > 0)
+                {
+                    if (cbunidade.getSelectionModel().getSelectedIndex() != -1)
+                    {
+                        if (cbcategoria.getSelectionModel().getSelectedIndex() != -1)
+                        {
+                            p = new Produto(cod, cbcategoria.getValue(), cbunidade.getValue(),
+                                    txnome.getText(),
+                                    Double.parseDouble(txpreco.getText().replace(".", "").replace(",", ".")),
+                                    txdescr.getText());
+                            DALProduto dal = new DALProduto();
+                            if (p.getCod() == 0) // novo cadastro
+                            {
+                                if (!dal.gravar(p))
+                                {
+                                    a.setContentText("Problemas ao Gravar");
+                                   // a.showAndWait();
+                                }
+                            } else //alteração de cadastro
+                            if (!dal.alterar(p))
+                            {
+                                a.setContentText("Problemas ao Alterar");
+                                a.showAndWait();
+                            }
+                            estadoOriginal();
+                        }
+                        else
+                        {
+                            a.setContentText("Informe a categoria!");
+                        }
+                    }
+                    else
+                    {
+                        a.setContentText("Informe a unidade!");
+                    }
+                } else
+                {
+                    a.setContentText("Informe o preço!");
+                }
             } else
             {
-
+                a.setContentText("Informe a descrição!");
             }
-        } else //alteração de cadastro
-        if (!dal.alterar(p))
-        {
-            a.setContentText("Problemas ao Alterar");
         } else
         {
-
-        }
-        a.showAndWait();
-        estadoOriginal();
+            a.setContentText("Informe o nome!");
+            a.showAndWait();
+        }        
+        carregaTabela("");
     }
 
     @FXML
@@ -296,7 +320,5 @@ public class FXMLCadProduto2Controller implements Initializable
             cbunidade.getSelectionModel().select(tabela.getSelectionModel().getSelectedItem().getCodu());
 
         }
-
     }
-
 }

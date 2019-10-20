@@ -240,8 +240,8 @@ public class FXMLCadGarcomController implements Initializable
             txcidade.setText(g.getCidade());
             txcpf.setText(g.getCpf());
             txendereco.setText(g.getEnderco());
-            txfone.setText(g.getFone());          
-            
+            txfone.setText(g.getFone());
+
             estadoEdicao();
         }
     }
@@ -267,7 +267,7 @@ public class FXMLCadGarcomController implements Initializable
     private void clkBtConfirmar(ActionEvent event) throws IOException
     {
         int cod;
-
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
         try
         {
             cod = Integer.parseInt(txcod.getText());
@@ -275,70 +275,121 @@ public class FXMLCadGarcomController implements Initializable
         {
             cod = 0;
         }
-        //VALIDAR TAMANHOS DOS TXBOX
-
-        Garcon g = new Garcon(cod, txnome.getText(), txcpf.getText(), txcep.getText(), txendereco.getText(), txcidade.getText(), txuf.getText(), txfone.getText());
-        DALGarcon dal = new DALGarcon();
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        if (g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
+        if (txnome.getText().length() > 0)
         {
-            if (dal.gravar(g))
+            if (txcpf.getText().length() > 0)
             {
-                if (imgview_foto.getImage() != null)
+                if (txcep.getText().length() > 0)
                 {
-                    BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte[] imageInByte;
-                    ImageIO.write(bimg, "jpg", baos);
-                    baos.flush();
-                    imageInByte = baos.toByteArray();
-                    baos.close();
-                    g.setCod(Banco.getCon().getMaxPK("garcon", "gar_id")); // PEGAR O ID PARA NAO DAR ERRO
-                    InputStream in = new ByteArrayInputStream(imageInByte);
-                    if (!dal.gravarFoto(g, in, baos.toByteArray().length))
+                    if (txendereco.getText().length() > 0)
                     {
-                        a.setContentText("Garçon gravado sem foto");
-                        a.showAndWait();
+                        if (txcidade.getText().length() > 0)
+                        {
+                            if (txuf.getText().length() > 0)
+                            {
+                                if (txfone.getText().length() > 0)
+                                {
+                                    Garcon g = new Garcon(cod, txnome.getText(), txcpf.getText(), txcep.getText(), txendereco.getText(), txcidade.getText(), txuf.getText(), txfone.getText());
+                                    DALGarcon dal = new DALGarcon();
+                                    
+                                    if (g.getCod() == 0) // SIGNIFICA NOVO CADASTRO
+                                    {
+                                        if (dal.gravar(g))
+                                        {
+                                            if (imgview_foto.getImage() != null)
+                                            {
+                                                BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                byte[] imageInByte;
+                                                ImageIO.write(bimg, "jpg", baos);
+                                                baos.flush();
+                                                imageInByte = baos.toByteArray();
+                                                baos.close();
+                                                g.setCod(Banco.getCon().getMaxPK("garcon", "gar_id")); // PEGAR O ID PARA NAO DAR ERRO
+                                                InputStream in = new ByteArrayInputStream(imageInByte);
+                                                if (!dal.gravarFoto(g, in, baos.toByteArray().length))
+                                                {
+                                                    a.setContentText("Garçon gravado sem foto");
+                                                    a.showAndWait();
+                                                }
+                                            } else
+                                            {
+                                                a.setContentText("Garçon gravado sem foto");
+                                                a.showAndWait();
+                                            }
+                                        } else
+                                        {
+                                            a.setContentText("Problemas ao gravar!");
+                                            a.showAndWait();
+                                        }
+                                    } else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
+                                    {
+                                        if (dal.alterar(g))
+                                        {
+                                            if (imgview_foto.getImage() != null)
+                                            {
+                                                BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
+                                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                byte[] imageInByte;
+                                                ImageIO.write(bimg, "jpg", baos);
+                                                baos.flush();
+                                                imageInByte = baos.toByteArray();
+                                                baos.close();
+
+                                                InputStream in = new ByteArrayInputStream(imageInByte);
+                                                if (dal.gravarFoto(g, in, baos.toByteArray().length))
+                                                {
+                                                    a.setContentText("Garçon alterado com sucesso");
+                                                } else
+                                                {
+                                                    a.setContentText("Garçon alterado sem foto");
+                                                    a.showAndWait();
+                                                }
+                                            }
+                                        } else
+                                        {
+                                            a.setContentText("Problemas ao alterar!");
+                                            a.showAndWait();
+                                        }
+                                    }
+                                    a.showAndWait();
+                                    estadoOriginal();
+                                }
+                                else
+                                {
+                                    a.setContentText("Informe o telefone!");
+                                }
+                            }
+                            else
+                            {
+                                a.setContentText("Informe o UF!");
+                            }
+                        }
+                        else
+                        {
+                            a.setContentText("Informe a cidade!");
+                        }
                     }
-                } else
-                {
-                    a.setContentText("Garçon gravado sem foto");
+                    else
+                    {
+                        a.setContentText("Informe o endereço!");
+                    }
                 }
-            } else
-            {
-                a.setContentText("Problemas ao gravar!");
+                else
+                {
+                    a.setContentText("Informe o cep!");
+                }
             }
-        } else // SIGNIFICA QUE CODIGO NÃO É NOVO CADASTRO
-        {
-            if (dal.alterar(g))
+            else
             {
-                if (imgview_foto.getImage() != null)
-                {
-                    BufferedImage bimg = SwingFXUtils.fromFXImage(imgview_foto.getImage(), null);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte[] imageInByte;
-                    ImageIO.write(bimg, "jpg", baos);
-                    baos.flush();
-                    imageInByte = baos.toByteArray();
-                    baos.close();
-
-                    InputStream in = new ByteArrayInputStream(imageInByte);
-                    if (dal.gravarFoto(g, in, baos.toByteArray().length))
-                    {
-                        a.setContentText("Garçon alterado com sucesso");
-                    } else
-                    {
-                        a.setContentText("Garçon alterado sem foto");
-                        a.showAndWait();
-                    }
-                }
-            } else
-            {
-                a.setContentText("Problemas ao alterar!");
+                a.setContentText("Informe o cpf!");
             }
         }
+        else
+        {
+            a.setContentText("Informe o nome!");
+        }
         a.showAndWait();
-        estadoOriginal();
         carregaTabela("");
     }
 
@@ -373,7 +424,7 @@ public class FXMLCadGarcomController implements Initializable
             txendereco.setText(tabela.getSelectionModel().getSelectedItem().getEnderco());
             txfone.setText(tabela.getSelectionModel().getSelectedItem().getFone());
             txuf.setText(tabela.getSelectionModel().getSelectedItem().getUf());
-            
+
             DALGarcon dal = new DALGarcon();
             Garcon g = (Garcon) tabela.getSelectionModel().getSelectedItem();
             InputStream img = dal.getFoto(g);

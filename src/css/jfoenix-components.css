@@ -2,6 +2,19 @@
 .jfx-combo-box .cell:selected{ -fx-background-color: #263146; -fx-text-fill: WHITE; }
 */
 
+
+#spnprincipal
+{
+    -fx-background-image: url('icons/textura.png');
+    -fx-background-repeat: no-repeat;
+    background-position: 50% 0%;
+    position:absolute;
+    left:0px;
+    top:0;
+    margin-top:-50%;
+    height: 100%;
+    width:100%;
+}
 /*
  * TABLE CSS
  */
