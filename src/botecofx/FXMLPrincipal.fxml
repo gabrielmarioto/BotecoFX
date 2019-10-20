@@ -20,6 +20,8 @@
               <menus>
                 <Menu mnemonicParsing="false" text="_Gerenciar Cadastros">
                   <items>
+                        <MenuItem onAction="#clkCadCategoria" text="_Categoria" />
+                        <MenuItem onAction="#clkCadUnidade" text="_Unidade" />
                     <MenuItem onAction="#clkCadProduto" text="_Produtos" />
                         <MenuItem onAction="#clkCadGarcom" text="_Garcom" />
                   </items>

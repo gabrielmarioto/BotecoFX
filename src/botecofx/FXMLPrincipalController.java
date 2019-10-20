@@ -137,4 +137,34 @@ public class FXMLPrincipalController implements Initializable
         System.exit(0);
     }
 
+    @FXML
+    private void clkCadCategoria(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadCategoria.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
+    }
+
+    @FXML
+    private void clkCadUnidade(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadUnidade.fxml"));
+            efeito(true);
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
+    }
+
 }
