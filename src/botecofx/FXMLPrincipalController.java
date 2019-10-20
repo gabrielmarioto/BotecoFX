@@ -50,7 +50,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadProduto2.fxml"));
-            efeito(true);
+            
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -113,8 +113,8 @@ public class FXMLPrincipalController implements Initializable
     @FXML
     private void clkGoToHome(ActionEvent event)
     {
-        FXMLPrincipalController.spnprincipal.setCenter(null);
-        FXMLPrincipalController.efeito(false);
+        spnprincipal.setCenter(null);
+        
     }
 
     @FXML
@@ -123,7 +123,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadGarcom.fxml"));
-            efeito(true);
+            
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -144,7 +144,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadCategoria.fxml"));
-            efeito(true);
+            
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -159,7 +159,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadUnidade.fxml"));
-            efeito(true);
+            
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)

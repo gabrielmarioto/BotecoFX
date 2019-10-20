@@ -5,6 +5,7 @@
  */
 package botecofx;
 
+import static botecofx.FXMLPrincipalController.spnprincipal;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALCategoria;
@@ -174,9 +175,14 @@ public class FXMLCadCategoriaController implements Initializable
             DALCategoria dal = new DALCategoria();
             Categoria c;
             c = tabela.getSelectionModel().getSelectedItem();
-            dal.apagar(c);
+            if(!dal.apagar(c))
+            {
+                a.setContentText("Erro ao excluir!");
+                a.showAndWait();
+            }            
             carregaTabela("");
         }
+        estadoOriginal();
     }
 
     @FXML
@@ -228,8 +234,8 @@ public class FXMLCadCategoriaController implements Initializable
             estadoOriginal();
         } else
         {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+          spnprincipal.setCenter(null);
+            
         }
     }
 

@@ -198,7 +198,11 @@ public class FXMLCadProduto2Controller implements Initializable
             DALProduto dal = new DALProduto();
             Produto p;
             p = tabela.getSelectionModel().getSelectedItem();
-            dal.apagar(p);
+            if(!dal.apagar(p))
+            {
+                a.setContentText("Erro ao excluir!");
+                a.showAndWait();
+            }
             carregaTabela("");
         }
     }
@@ -279,8 +283,8 @@ public class FXMLCadProduto2Controller implements Initializable
             estadoOriginal();
         } else
         {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+            spnprincipal.setCenter(null);
+          
         }
         //ou TelaMenuController.painel.getChildren().clear();
 

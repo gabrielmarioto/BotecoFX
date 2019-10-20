@@ -45,9 +45,8 @@ public class FXMLPainelComandaController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComanda.fxml"));
                 Parent root = (Parent) loader.load();
                 FXMLComandaController ctr = loader.getController();
-                ctr.setNumeroComanda(i);
-                painel.getChildren().add(root);    
-                
+                ctr.setNumeroComanda(i); // alterar aq?
+                painel.getChildren().add(root);                    
             }
             
 

@@ -5,6 +5,7 @@
  */
 package botecofx;
 
+import static botecofx.FXMLPrincipalController.spnprincipal;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALCategoria;
@@ -12,6 +13,7 @@ import db.dal.DALUnidade;
 import db.entidades.Categoria;
 import db.entidades.Unidade;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -166,10 +168,15 @@ public class FXMLCadUnidadeController implements Initializable
         if (a.showAndWait().get() == ButtonType.OK)
         {
             DALUnidade dal = new DALUnidade();
-            Unidade u = tabela.getSelectionModel().getSelectedItem();
-            dal.apagar(u);
+            Unidade u = tabela.getSelectionModel().getSelectedItem();           
+            if(!dal.apagar(u))
+            {
+                a.setContentText("Erro ao excluir!");
+                a.showAndWait();
+            }
             carregaTabela("");
         }
+        estadoOriginal();
     }
 
     @FXML
@@ -220,8 +227,8 @@ public class FXMLCadUnidadeController implements Initializable
             estadoOriginal();
         } else
         {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+            spnprincipal.setCenter(null);
+          
         }
     }
 

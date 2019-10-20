@@ -30,7 +30,8 @@ public class FXMLComandaPopUpController implements Initializable {
     }    
 
     @FXML
-    private void clkBotaoFechar(ActionEvent event) {
+    private void clkBotaoFechar(ActionEvent event) 
+    {
         ((Button)event.getSource()).getScene().getWindow().hide();
     }
 

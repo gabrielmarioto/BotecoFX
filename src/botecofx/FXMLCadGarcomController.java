@@ -5,6 +5,7 @@
  */
 package botecofx;
 
+import static botecofx.FXMLPrincipalController.spnprincipal;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALGarcon;
@@ -256,10 +257,19 @@ public class FXMLCadGarcomController implements Initializable
             DALGarcon dal = new DALGarcon();
             Garcon g;
             g = tabela.getSelectionModel().getSelectedItem();
-            dal.apagar(g);
+            if(!dal.apagar(g))
+            {
+                a.setContentText("Erro ao excluir!");
+                a.showAndWait();
+            }
+            else
+            {
+                a.setContentText("Exclusao com sucesso!");
+                a.showAndWait();
+            }
             carregaTabela("");
             estadoOriginal();
-            a.setContentText("Exclusao com sucesso!");
+            
         }
     }
 
@@ -310,13 +320,8 @@ public class FXMLCadGarcomController implements Initializable
                                                 if (!dal.gravarFoto(g, in, baos.toByteArray().length))
                                                 {
                                                     a.setContentText("Garçon gravado sem foto");
-                                                    a.showAndWait();
                                                 }
-                                            } else
-                                            {
-                                                a.setContentText("Garçon gravado sem foto");
-                                                a.showAndWait();
-                                            }
+                                            } 
                                         } else
                                         {
                                             a.setContentText("Problemas ao gravar!");
@@ -352,7 +357,6 @@ public class FXMLCadGarcomController implements Initializable
                                             a.showAndWait();
                                         }
                                     }
-                                    a.showAndWait();
                                     estadoOriginal();
                                 }
                                 else
@@ -388,8 +392,10 @@ public class FXMLCadGarcomController implements Initializable
         else
         {
             a.setContentText("Informe o nome!");
+            
+            a.showAndWait();
         }
-        a.showAndWait();
+        
         carregaTabela("");
     }
 
@@ -488,8 +494,8 @@ public class FXMLCadGarcomController implements Initializable
             estadoOriginal();
         } else
         {
-            FXMLPrincipalController.spnprincipal.setCenter(null);
-            FXMLPrincipalController.efeito(false);
+            spnprincipal.setCenter(null);
+            
         }
     }
 

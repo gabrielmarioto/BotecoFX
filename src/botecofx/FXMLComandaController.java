@@ -45,17 +45,19 @@ public class FXMLComandaController implements Initializable {
 
     }
 
-    public void setNumeroComanda(int num) {
+    public void setNumeroComanda(int num) 
+    {
         comanda = num;
-        lbcomanda.setText("comanda #" + comanda);
+        lbcomanda.setText("Comanda #" + comanda);
         if (comanda % 3 == 0) //troca a cor do painel
         {
-            painel.setStyle("-fx-background-color: #FFFF00;");
+            painel.setStyle("-fx-background-color: Orange;");
         }
     }
 
     @FXML
-    private void clkAcaoExemplo(ActionEvent event) {
+    private void clkAcaoExemplo(ActionEvent event) 
+    {
 //        Alert alert;
 //        alert  =new Alert(Alert.AlertType.INFORMATION);
 //        alert.setContentText("Comanda número "+comanda);
