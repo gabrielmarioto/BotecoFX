@@ -40,7 +40,7 @@ public class FXMLPrincipalController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         spnprincipal = pnprincipal;
-      //spnprincipal.setStyle("-fx-background-position: center;");
+        //spnprincipal.setStyle("-fx-background-position: center;");
     }
 
     @FXML
@@ -50,7 +50,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadProduto2.fxml"));
-            
+
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -89,7 +89,15 @@ public class FXMLPrincipalController implements Initializable
     @FXML
     private void clkNovaComanda(ActionEvent event)
     {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLAbrirComanda.fxml"));
+            pnprincipal.setCenter(root);
 
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
     }
 
     public static void efeito(boolean on)
@@ -100,8 +108,8 @@ public class FXMLPrincipalController implements Initializable
 //            ft.setFromValue(1.0);
 //            ft.setToValue(0.5);
 //            ft.play(); 
-            spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");           
-           // spnprincipal.setStyle("css/jfoenix-components");    
+            spnprincipal.setStyle("-fx-background-image: url('icons/textura.png');");
+            // spnprincipal.setStyle("css/jfoenix-components");    
 
         } else
         {
@@ -114,7 +122,7 @@ public class FXMLPrincipalController implements Initializable
     private void clkGoToHome(ActionEvent event)
     {
         spnprincipal.setCenter(null);
-        
+
     }
 
     @FXML
@@ -123,7 +131,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadGarcom.fxml"));
-            
+
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -133,7 +141,7 @@ public class FXMLPrincipalController implements Initializable
     }
 
     @FXML
-    private void clkFechar(ActionEvent event) 
+    private void clkFechar(ActionEvent event)
     {
         System.exit(0);
     }
@@ -144,7 +152,7 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadCategoria.fxml"));
-            
+
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)
@@ -159,7 +167,22 @@ public class FXMLPrincipalController implements Initializable
         try
         {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLCadUnidade.fxml"));
-            
+
+            pnprincipal.setCenter(root);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex);
+        }
+    }
+
+    @FXML
+    private void clkCadTipoPgto(ActionEvent event)
+    {
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLCadTipoPgto.fxml"));
+
             pnprincipal.setCenter(root);
 
         } catch (IOException ex)

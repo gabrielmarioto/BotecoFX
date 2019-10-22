@@ -22,14 +22,15 @@
                   <items>
                         <MenuItem onAction="#clkCadCategoria" text="_Categoria" />
                         <MenuItem onAction="#clkCadUnidade" text="_Unidade" />
+                        <MenuItem onAction="#clkCadTipoPgto" text="_Tipo Pagamento" />
                     <MenuItem onAction="#clkCadProduto" text="_Produtos" />
                         <MenuItem onAction="#clkCadGarcom" text="_Garcom" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="_Gerenciar Comanda">
                   <items>
-                    <MenuItem onAction="#clkMostrarComandas" text="_Exibir Comandas" />
                         <MenuItem onAction="#clkNovaComanda" text="_Nova Comanda" />
+                    <MenuItem onAction="#clkMostrarComandas" text="_Exibir Comandas" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="_Help">

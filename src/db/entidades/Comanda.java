@@ -46,13 +46,18 @@ public class Comanda
     public class Pagamento
     {
         private double valor;
+        private int cod;
         private TipoPgto tipo;
 
         public Pagamento(double valor, TipoPgto tipo) {
             this.valor = valor;
             this.tipo = tipo;
         }
-
+         public Pagamento(int pag_id, double pag_valor, TipoPgto tipo) {
+            this.cod= pag_id;
+            this.valor = pag_valor;
+            this.tipo = tipo;
+        }
         public double getValor() {
             return valor;
         }
@@ -188,9 +193,15 @@ public class Comanda
     {
         itens.add(new Item(p, q, p.getPreco()));
     }
+    public void addProduto(Produto prod, int quantidade, double valor) {
+        itens.add(new Item(prod, quantidade, valor));
+    }
     public void addPagamento(double valor, TipoPgto tp)
     {
         pagamentos.add(new Pagamento(valor, tp));
+    }
+    public void addPagamento(int id, double valor, TipoPgto tp) {
+        pagamentos.add(new Pagamento(id, valor, tp));
     }
     
 }
