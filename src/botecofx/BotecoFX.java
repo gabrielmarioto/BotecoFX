@@ -46,14 +46,35 @@ public class BotecoFX extends Application
 //        String cep="19053694";
 //        String jsonresult = ConsultaAPI.consultaCep(cep);
 //        System.out.println(jsonresult);
-        if (Banco.conectar())
-        {
-            launch(args);
-        } else
+        if(!Banco.conectar())
         {
             JOptionPane.showMessageDialog(null, "Erro: " + Banco.getCon().getMensagemErro());
-            System.exit(0);
+            if(JOptionPane.showConfirmDialog(null, "Deseja criar uma base de dados?") == JOptionPane.YES_OPTION)
+            {
+                if(!Banco.criarBD("botecodb"))
+                {
+                    JOptionPane.showMessageDialog(null, "Erro ao criar banco: " + Banco.getCon().getMensagemErro());
+                    System.exit(-1);
+                }
+                else
+                {
+                    if(!Banco.conectar())
+                    {
+                        JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco");                    
+                        System.exit(-1);
+                    }
+                    else                        
+                        if(!Banco.criarTabelas("script/script.sql", "botecodb"))
+                        {
+                            JOptionPane.showMessageDialog(null, "Erro ao criar tabelas: " + Banco.getCon().getMensagemErro());
+                            System.exit(-1);
+                        }
+                }
+            }    
+            else
+                System.exit(-1);
         }
+        launch(args);
     }
 
 }

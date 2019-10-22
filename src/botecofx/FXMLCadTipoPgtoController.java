@@ -9,11 +9,9 @@ import static botecofx.FXMLPrincipalController.spnprincipal;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALCategoria;
-import db.dal.DALProduto;
-import db.dal.DALUnidade;
+import db.dal.DALTipoPgto;
 import db.entidades.Categoria;
-import db.entidades.Produto;
-import db.entidades.Unidade;
+import db.entidades.TipoPgto;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,11 +39,13 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author Gabriel
+ * @author Aluno
  */
-public class FXMLCadCategoriaController implements Initializable
+public class FXMLCadTipoPgtoController implements Initializable
 {
 
+    @FXML
+    private SplitPane painel;
     @FXML
     private JFXButton btnovo;
     @FXML
@@ -57,6 +57,8 @@ public class FXMLCadCategoriaController implements Initializable
     @FXML
     private JFXButton btcancelar;
     @FXML
+    private AnchorPane pndados;
+    @FXML
     private JFXTextField txcod;
     @FXML
     private JFXTextField txnome;
@@ -67,15 +69,11 @@ public class FXMLCadCategoriaController implements Initializable
     @FXML
     private JFXButton btpesquisar;
     @FXML
-    private TableView<Categoria> tabela;
+    private TableView<TipoPgto> tabela;
     @FXML
-    private TableColumn<Categoria, Integer> colcod;
+    private TableColumn<TipoPgto, Integer> colcod;
     @FXML
-    private TableColumn<Categoria, String> colnome;
-    @FXML
-    private SplitPane painel;
-    @FXML
-    private AnchorPane pndados;
+    private TableColumn<TipoPgto, String> colnome;
 
     /**
      * Initializes the controller class.
@@ -140,9 +138,9 @@ public class FXMLCadCategoriaController implements Initializable
 
     private void carregaTabela(String filtro)
     {
-        DALCategoria dal = new DALCategoria();
-        List<Categoria> res = dal.get(filtro);
-        ObservableList<Categoria> modelo;
+        DALTipoPgto dal = new DALTipoPgto();
+        List<TipoPgto> res = dal.get(filtro);
+        ObservableList<TipoPgto> modelo;
         modelo = FXCollections.observableArrayList(res);
         tabela.setItems(modelo);
     }
@@ -158,9 +156,9 @@ public class FXMLCadCategoriaController implements Initializable
     {
         if (tabela.getSelectionModel().getSelectedItem() != null)
         {
-            Categoria c = (Categoria) tabela.getSelectionModel().getSelectedItem();
-            txcod.setText("" + c.getCod());
-            txnome.setText(c.getNome());
+            TipoPgto tp = (TipoPgto) tabela.getSelectionModel().getSelectedItem();
+            txcod.setText("" + tp.getCod());
+            txnome.setText(tp.getNome());
             estadoEdicao();
         }
     }
@@ -172,10 +170,9 @@ public class FXMLCadCategoriaController implements Initializable
         a.setContentText("Confirma a exclusão?");
         if (a.showAndWait().get() == ButtonType.OK)
         {
-            DALCategoria dal = new DALCategoria();
-            Categoria c;
-            c = tabela.getSelectionModel().getSelectedItem();
-            if (!dal.apagar(c))
+            DALTipoPgto dal = new DALTipoPgto();
+            TipoPgto p = tabela.getSelectionModel().getSelectedItem();
+            if (!dal.apagar(p))
             {
                 a.setContentText("Erro ao excluir!");
                 a.showAndWait();
@@ -189,7 +186,6 @@ public class FXMLCadCategoriaController implements Initializable
     private void clkBtConfirmar(ActionEvent event)
     {
         int cod;
-        Categoria c = null;
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         try
         {
@@ -200,17 +196,17 @@ public class FXMLCadCategoriaController implements Initializable
         }
         if (txnome.getText().length() > 0)
         {
-            c = new Categoria(cod, txnome.getText());
-            DALCategoria dal = new DALCategoria();
-            if (c.getCod() == 0)
+            TipoPgto tp = new TipoPgto(cod, txnome.getText());
+            DALTipoPgto dal = new DALTipoPgto();
+            if (tp.getCod() == 0)
             {
-                if (!dal.gravar(c))
+                if (!dal.gravar(tp))
                 {
                     a.setContentText("Problemas ao Gravar");
                 }
             } else
             {
-                if (!dal.alterar(c))
+                if (!dal.alterar(tp))
                 {
                     a.setContentText("Problemas ao Alterar");
                     a.showAndWait();
@@ -242,15 +238,13 @@ public class FXMLCadCategoriaController implements Initializable
     @FXML
     private void clkTxPesquisa(KeyEvent event)
     {
-        carregaTabela("upper(cat_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
+        carregaTabela("upper(tpg_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
-
     @FXML
     private void clkBtPesquisar(ActionEvent event)
     {
-        carregaTabela("upper(cat_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
+        carregaTabela("upper(tpg_nome) like '%" + txpesquisa.getText().toUpperCase() + "%'");
     }
-
     @FXML
     private void clkTabela(MouseEvent event)
     {

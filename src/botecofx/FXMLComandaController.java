@@ -67,7 +67,7 @@ public class FXMLComandaController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComandaPopUp.fxml"));
             Parent root = (Parent) loader.load();
             FXMLComandaPopUpController ctr = loader.getController();
-            ctr.setNumcomanda(comanda);
+           // ctr.setNumcomanda(comanda);
             
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
