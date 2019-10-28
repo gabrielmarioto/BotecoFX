@@ -5,6 +5,8 @@
  */
 package botecofx;
 
+import static botecofx.FXMLPrincipalController.spnprincipal;
+import db.entidades.Comanda;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -31,9 +33,9 @@ import javafx.util.Duration;
  */
 public class FXMLComandaController implements Initializable {
 
+    private Comanda comanda;
     @FXML
     private Label lbcomanda;
-    private int comanda;
     @FXML
     private AnchorPane painel;
 
@@ -44,38 +46,25 @@ public class FXMLComandaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-
-    public void setNumeroComanda(int num) 
+     public void setComanda(Comanda c)
     {
-        comanda = num;
-        lbcomanda.setText("Comanda #" + comanda);
-        if (comanda % 3 == 0) //troca a cor do painel
-        {
-            painel.setStyle("-fx-background-color: Orange;");
-        }
+        comanda = c;
+        lbcomanda.setText(lbcomanda.getText().replace("#", ""+comanda.getNum()));
     }
-
+    public void setCor(String cor)
+    {
+        painel.setStyle("-fx-background-color: " + cor + ";");
+    }
     @FXML
     private void clkAcaoExemplo(ActionEvent event) 
     {
-//        Alert alert;
-//        alert  =new Alert(Alert.AlertType.INFORMATION);
-//        alert.setContentText("Comanda número "+comanda);
-//        alert.showAndWait();
         try {
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComandaPopUp.fxml"));
-            Parent root = (Parent) loader.load();
-            FXMLComandaPopUpController ctr = loader.getController();
-           // ctr.setNumcomanda(comanda);
-            
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            efeito(event, true);
-            stage.showAndWait();
-            efeito(event, false);
+        Parent root = (Parent) loader.load();
+        FXMLComandaPopUpController ger = loader.getController();
+        ger.setComanda(comanda);
+        spnprincipal.setCenter(root);
             
             
         } catch (Exception e) {

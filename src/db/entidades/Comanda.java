@@ -1,6 +1,7 @@
 package db.entidades;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Comanda 
@@ -109,18 +110,14 @@ public class Comanda
         this.desc = desc;
         this.valor = valor;
         this.status = status;
+        itens = new ArrayList();
+        pagamentos = new ArrayList();
+        
     }
 
     public Comanda(Garcon gar, int num, String nome, LocalDate data, String desc, double valor, char status) {
-        this.gar = gar;
-        this.num = num;
-        this.nome = nome;
-        this.data = data;
-        this.desc = desc;
-        this.valor = valor;
-        this.status = status;
+        this(0, gar, num, nome, data, desc, valor, status);
     }
-
     public int getCod() {
         return cod;
     }

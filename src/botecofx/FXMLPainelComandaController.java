@@ -5,8 +5,11 @@
  */
 package botecofx;
 
+import db.dal.DALComanda;
+import db.entidades.Comanda;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,27 +34,27 @@ public class FXMLPainelComandaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        try {
-//            Parent root = FXMLLoader.load(getClass().getResource("FXMLComanda.fxml"));
-//            painel.setId("1");
-//            painel.getChildren().add(root);
-//            
-//        } catch (IOException ex) {
-//            System.out.println(ex);
-//        }
-        try {
-            for (int i = 0; i < 20; i++) 
+           DALComanda dal = new DALComanda();
+        List <Comanda> lista = dal.get("com_status = 'A'");
+        try
+        {
+            for(Comanda c : lista)
             {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComanda.fxml"));
                 Parent root = (Parent) loader.load();
-                FXMLComandaController ctr = loader.getController();
-                ctr.setNumeroComanda(i); // alterar aq?
-                painel.getChildren().add(root);                    
-            }
-            
-
-            //this.controller = (Tela1Controller) loader.getController(); 
-        } catch (Exception e) { }
+                FXMLComandaController ctl = loader.getController();
+                ctl.setComanda(c);
+                if(c.getPagamentos().isEmpty())
+                    ctl.setCor("#938d99");
+                else
+                    ctl.setCor("#a675a1"); //Alterar cor daqui
+                painel.getChildren().add(root);
+            } 
+        }
+        catch(IOException e )
+        {
+            System.out.println(e.getMessage());
+        }
     }    
     
 }

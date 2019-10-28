@@ -2,10 +2,13 @@ package db.dal;
 
 import db.util.Banco;
 import db.entidades.Comanda;
+import db.entidades.Comanda.Item;
+import db.entidades.Comanda.Pagamento;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 
 
@@ -16,37 +19,34 @@ public class DALComanda {
         boolean result = false;
         try
         {
+            Alert a = new Alert(Alert.AlertType.ERROR);
             Banco.getCon().getConnect().setAutoCommit(false);
             
-            String SQL = "INSERT INTO comanda (gar_id, com_numero, com_nome, com_data, com_desc, com_valor, com_status) "
-                    + "VALUES (#1, #2, '#3', '#4', '#5', #6, '#7')";
-            SQL = SQL.replace("#1", "" + c.getGar().getCod());
+            String SQL = "INSERT INTO comanda (gar_id, com_numero, com_nome, com_data, com_desc, com_valor, com_status) VALUES (#1, #2, '#3', '#4', '#5', #6, '#7') ";
+            SQL = SQL.replace("#1", "" + c.getGar().getCod());            
             SQL = SQL.replace("#2", "" + c.getNum());
             SQL = SQL.replace("#3", c.getNome());
             SQL = SQL.replace("#4", c.getData().toString());
             SQL = SQL.replace("#5", c.getDesc());
             SQL = SQL.replace("#6", "" + c.getValor());
-            SQL = SQL.replace("#7", "" + c.getStatus());
-
-            result = Banco.getCon().manipular(SQL);
-
+            SQL = SQL.replace("#7", ""+c.getStatus());
+            result = Banco.getCon().manipular(SQL);          
+           
             if(result)
             {
                 c.setCod(Banco.getCon().getMaxPK("comanda", "com_id"));
 
-                List <Comanda.Item> itens = c.getItens();
+                //List <Comanda.Item> itens = c.getItens();
 
-                for(Comanda.Item i: itens)
+                for(Comanda.Item i: c.getItens())
                 {
-                    SQL = "INSERT INTO item (com_id, prod_id, it_quantidade, it_preco) VALUES (#1, #2, #3, #4)";
+                    SQL = "INSERT INTO item (com_id, prod_id, it_quantidade) VALUES (#1, #2, #3)";
                     SQL = SQL.replace("#1", "" + c.getCod());
                     SQL = SQL.replace("#2", "" + i.getP().getCod());
                     SQL = SQL.replace("#3", "" + i.getQuant());
-                    SQL = SQL.replace("#4", "" + i.getValor());
-
+                    
                     result = result && Banco.getCon().manipular(SQL);
                 }
-
                 if(result)
                 {
                     List <Comanda.Pagamento> pagamentos = c.getPagamentos();
@@ -85,37 +85,35 @@ public class DALComanda {
     public boolean alterar(Comanda c)
     {
         boolean result = false;
-        String SQL = "UPDATE comanda SET gar_id = #1, com_numero = #2, com_nome = '#3', "
-                + "com_data = '#4', com_desc = '#5', com_valor = #6, com_status = '#7' WHERE com_id = " + c.getCod();
+        String SQL = "UPDATE comanda SET gar_id = #1, com_numero = #2, com_nome = '#3', com_data = '#4', com_desc = '#5', com_valor = #6, com_status = '#7' WHERE com_id = " + c.getCod();
         SQL = SQL.replace("#1", "" + c.getGar().getCod());
-        SQL = SQL.replace("#2", "" + c.getCod());
+        SQL = SQL.replace("#2", "" + c.getNum());
         SQL = SQL.replace("#3", c.getNome());
         SQL = SQL.replace("#4", c.getData().toString());
         SQL = SQL.replace("#5", c.getDesc());
         SQL = SQL.replace("#6", "" + c.getValor());
         SQL = SQL.replace("#7", "" + c.getStatus());
-       
+        System.out.println("UPDATE "+SQL);
         try
         {
             Banco.getCon().getConnect().setAutoCommit(false);
         
-            result = Banco.getCon().manipular(SQL);
+              result = Banco.getCon().manipular(SQL);
 
             if(result)
             {
                 SQL = "DELETE FROM item where com_id = " + c.getCod();
                 Banco.getCon().manipular(SQL);
-                List <Comanda.Item> itens = c.getItens();
-
-                for(Comanda.Item i: itens)
+                //List <Comanda.Item> itens = c.getItens();
+                System.out.println("DELETE "+SQL);
+                for(Item i: c.getItens())
                 {
-                    SQL = "INSERT INTO item (com_id, prod_id, it_quantidade, it_preco) VALUES (#1, #2, #3, #4)";
+                    SQL = "INSERT INTO item (com_id, prod_id, it_quantidade) VALUES (#1, #2, #3)";
                     SQL = SQL.replace("#1", "" + c.getCod());
                     SQL = SQL.replace("#2", "" + i.getP().getCod());
                     SQL = SQL.replace("#3", "" + i.getQuant());
-                    SQL = SQL.replace("#4", "" + i.getValor());
-
-                    Banco.getCon().manipular(SQL);
+                    System.out.println("INSERE "+SQL);
+                    Banco.getCon().manipular(SQL);                    
                 }
 
                 if(result)
@@ -123,14 +121,14 @@ public class DALComanda {
                     SQL = "DELETE FROM pagamento where com_id = " + c.getCod();
                     Banco.getCon().manipular(SQL);
                     List <Comanda.Pagamento> pagamentos = c.getPagamentos();
-
-                    for(Comanda.Pagamento p: pagamentos)
+                    System.out.println("DELETE PAGAMENTO"+SQL);
+                    for(Pagamento p: pagamentos)
                     {
                         SQL = "INSERT INTO pagamento (com_id, pag_valor, tpg_id) VALUES (#1, #2, #3)";
                         SQL = SQL.replace("#1", "" + c.getCod());
                         SQL = SQL.replace("#2", "" + p.getValor());
                         SQL = SQL.replace("#3", "" + p.getTipo().getCod());
-
+                        System.out.println("INSERER PGTO "+SQL);
                         Banco.getCon().manipular(SQL);
                     }
                 }
@@ -150,7 +148,7 @@ public class DALComanda {
             
             Banco.getCon().getConnect().setAutoCommit(true);
         }
-        catch(Exception e) { }
+        catch(Exception e){}
         
         return result;
     }

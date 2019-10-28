@@ -78,7 +78,6 @@ public class FXMLAbrirComandaController implements Initializable
     {
         // TODO
         dtpdata.setValue(LocalDate.now());
-        MaskFieldUtil.numericField(txnome);
         DALGarcon dal = new DALGarcon();
         
         
@@ -121,18 +120,21 @@ public class FXMLAbrirComandaController implements Initializable
         else
             if(isOk())
             {
+                System.out.println(cbbGarcom.getValue());
                Comanda c = new Comanda(cbbGarcom.getValue(), Integer.parseInt(txmesa.getText()), txnome.getText(), dtpdata.getValue(), txdescricao.getText(), 0, 'A');
 
                 DALComanda dal = new DALComanda();
 
                 if(dal.gravar(c))
                 {
-                    FXMLPrincipalController.spnprincipal.setCenter(null);
+                    spnprincipal.setCenter(null);
                 }
                 else
                 {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setContentText("Erro ao abrir comanda. Erro: " + Banco.getCon().getMensagemErro());
+                    System.out.println(Banco.getCon().getMensagemErro());
+                    a.showAndWait();
                 }
             }
     }

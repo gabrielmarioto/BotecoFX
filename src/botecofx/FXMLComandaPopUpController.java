@@ -9,11 +9,14 @@ import static botecofx.FXMLPrincipalController.spnprincipal;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 import db.dal.DALComanda;
 import db.dal.DALGarcon;
 import db.entidades.Comanda;
 import db.entidades.Garcon;
+import db.util.Banco;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,8 +52,6 @@ import util.MaskFieldUtil;
  */
 public class FXMLComandaPopUpController implements Initializable
 {
-
-    private int numcomanda;
     private Label label;
     @FXML
     private SplitPane painel;
@@ -94,7 +95,6 @@ public class FXMLComandaPopUpController implements Initializable
     private AnchorPane pnDados2;
     @FXML
     private AnchorPane pnDados1;
-
     private Comanda c;
     private double valor;
     @FXML
@@ -112,18 +112,9 @@ public class FXMLComandaPopUpController implements Initializable
         colvalor.setCellValueFactory(new PropertyValueFactory("valor"));
         
         MaskFieldUtil.monetaryField(txvalor);
+       // carregaDados();
+        estadoOriginal();
     }
-
-//    private void clkBotaoFechar(ActionEvent event)
-//    {
-//        ((Button) event.getSource()).getScene().getWindow().hide();
-//    }
-//
-//    public void setNumcomanda(int numcomanda)
-//    {
-//        this.numcomanda = numcomanda;
-//        label.setText(label.getText() + numcomanda);
-//    }
 
     @FXML
     private void clkbtalterar(ActionEvent event)
@@ -157,16 +148,39 @@ public class FXMLComandaPopUpController implements Initializable
     @FXML
     private void clkBtConfirmar(ActionEvent event)
     {
+        if(isOk())
+        {
+            DALComanda dal = new DALComanda();
+            c = new Comanda(c.getCod(),cbbGarcom.getValue(), Integer.parseInt(txmesa.getText()), txnome.getText(), dtp_Data.getValue(), txdescricao.getText(), 0, 'A');
+            if(dal.alterar(c))
+            {
+                snackBar("Comanda alterada com sucesso");
+                estadoOriginal();
+            }
+            else
+            {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Erro ao alterar comanda. " + Banco.getCon().getMensagemErro());
+                a.showAndWait();
+            } 
+        }
     }
-
+    private void snackBar(String texto)
+    {
+      JFXSnackbar snacbar = new JFXSnackbar(pnDados2);
+        JFXSnackbarLayout layout = new JFXSnackbarLayout(texto);
+        layout.setStyle("-fx-backgroundcolor:#FFFFF");
+        snacbar.fireEvent(new JFXSnackbar.SnackbarEvent(layout));
+    }
     @FXML
     private void clkbtcancelarX(ActionEvent event) throws IOException
     {
-         if (!pnDados1.isDisable()) {
+        if(!pnDados1.isDisable())
             estadoOriginal();
-        } else {
+        else
+        {
             Parent root = FXMLLoader.load(getClass().getResource("FXMLPainelComanda.fxml"));
-            FXMLPrincipalController.spnprincipal.setCenter(root);
+            spnprincipal.setCenter(root);
         }
     }
 
@@ -201,6 +215,7 @@ public class FXMLComandaPopUpController implements Initializable
     private void clkBtRemoverPag(ActionEvent event)
     {
     }
+    
     public Comanda getComanda()
     {
         return c;
@@ -221,7 +236,7 @@ public class FXMLComandaPopUpController implements Initializable
         tbvPagamentos.setItems(obPagamento);
     }
     
-    private void estadoOriginal()
+   private void estadoOriginal()
     {
         btnRemoverItem.setDisable(true);
         btnRemoverPag.setDisable(true);
@@ -230,7 +245,7 @@ public class FXMLComandaPopUpController implements Initializable
         btconfirmar.setDisable(true);
         btalterar.setDisable(false);
         btfechar.setDisable(false);
-        //BtnFechar.setDisable(false);
+        btfechar.setDisable(false);
     }
     
     private void estadoEdicao()
@@ -239,8 +254,8 @@ public class FXMLComandaPopUpController implements Initializable
         btnRemoverPag.setDisable(true);
         pnDados2.setDisable(false);
         pnDados1.setDisable(false);
-        btconfirmar.setDisable(true);
-        btalterar.setDisable(false);
+        btconfirmar.setDisable(false);
+        btalterar.setDisable(true);
         btfechar.setDisable(false);
     }
     
@@ -251,8 +266,7 @@ public class FXMLComandaPopUpController implements Initializable
         txnome.setText(c.getNome());
         DALGarcon dal = new DALGarcon();
         ObservableList<Garcon> ob = FXCollections.observableList(dal.get(""));
-        cbbGarcom.setItems(ob);
-        cbbGarcom.getSelectionModel().select(0);
+        cbbGarcom.getSelectionModel().select(0);// gambis        
         cbbGarcom.getSelectionModel().select(c.getGar());
         dtp_Data.setValue(c.getData());
         alteraValor();
@@ -299,10 +313,18 @@ public class FXMLComandaPopUpController implements Initializable
     @FXML
     private void clkTabelaItens(MouseEvent event)
     {
+        if(tbvItems.getSelectionModel().getSelectedItem() != null)
+        {
+            btnRemoverItem.setDisable(false);
+        }
     }
 
     @FXML
     private void clkTabelaPagamentos(MouseEvent event)
     {
+        if(tbvPagamentos.getSelectionModel().getSelectedItem() != null)
+        {
+            btnRemoverPag.setDisable(false);
+        }
     }
 }
