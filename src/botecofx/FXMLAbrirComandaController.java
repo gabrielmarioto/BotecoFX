@@ -120,7 +120,6 @@ public class FXMLAbrirComandaController implements Initializable
         else
             if(isOk())
             {
-                System.out.println(cbbGarcom.getValue());
                Comanda c = new Comanda(cbbGarcom.getValue(), Integer.parseInt(txmesa.getText()), txnome.getText(), dtpdata.getValue(), txdescricao.getText(), 0, 'A');
 
                 DALComanda dal = new DALComanda();

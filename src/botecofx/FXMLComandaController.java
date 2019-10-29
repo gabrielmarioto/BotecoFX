@@ -41,6 +41,8 @@ public class FXMLComandaController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,7 +51,8 @@ public class FXMLComandaController implements Initializable {
      public void setComanda(Comanda c)
     {
         comanda = c;
-        lbcomanda.setText(lbcomanda.getText().replace("#", ""+comanda.getNum()));
+
+        lbcomanda.setText(lbcomanda.getText().replace("#1","#"+comanda.getNum()));
     }
     public void setCor(String cor)
     {
@@ -61,10 +64,10 @@ public class FXMLComandaController implements Initializable {
         try {
             
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLComandaPopUp.fxml"));
-        Parent root = (Parent) loader.load();
-        FXMLComandaPopUpController ger = loader.getController();
-        ger.setComanda(comanda);
-        spnprincipal.setCenter(root);
+            Parent root = (Parent) loader.load();
+            FXMLComandaPopUpController ger = loader.getController();
+            ger.setComanda(comanda);
+            spnprincipal.setCenter(root);
             
             
         } catch (Exception e) {

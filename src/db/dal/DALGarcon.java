@@ -67,11 +67,12 @@ public class DALGarcon
 
     public List<Garcon> get(String filtro)
     {
-        String sql = "select *from garcon";
+        String sql = "select * from garcon";
         if (!filtro.isEmpty())
         {
             sql += " where " + filtro;
         }
+        System.out.println(sql);
         List<Garcon> aux = new ArrayList();
         ResultSet rs = Banco.getCon().consultar(sql);
         try

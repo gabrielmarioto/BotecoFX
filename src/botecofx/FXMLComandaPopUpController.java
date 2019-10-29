@@ -12,13 +12,16 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
+import db.dal.DALCategoria;
 import db.dal.DALComanda;
 import db.dal.DALGarcon;
+import db.entidades.Categoria;
 import db.entidades.Comanda;
 import db.entidades.Garcon;
 import db.util.Banco;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -112,7 +115,6 @@ public class FXMLComandaPopUpController implements Initializable
         colvalor.setCellValueFactory(new PropertyValueFactory("valor"));
         
         MaskFieldUtil.monetaryField(txvalor);
-       // carregaDados();
         estadoOriginal();
     }
 
@@ -261,13 +263,24 @@ public class FXMLComandaPopUpController implements Initializable
     
     private void carregaDados()
     {
+        DALGarcon dal = new DALGarcon();
         txdescricao.setText(c.getDesc());
         txmesa.setText("" + c.getNum());
         txnome.setText(c.getNome());
-        DALGarcon dal = new DALGarcon();
-        ObservableList<Garcon> ob = FXCollections.observableList(dal.get(""));
-        cbbGarcom.getSelectionModel().select(0);// gambis        
-        cbbGarcom.getSelectionModel().select(c.getGar());
+        
+        //ObservableList<Garcon> ob = FXCollections.observableList(dal.get("gar_nome = "+"'"+c.getGar().getNome()+"'"));
+         //ObservableList<Garcon> ob2 = FXCollections.observableList(dal.get(""));
+         
+         
+        List<Garcon> garcons = new DALGarcon().get("");
+        cbbGarcom.setItems(FXCollections.observableArrayList(garcons));
+        
+        //cbbGarcom.setItems(ob2);
+        cbbGarcom.getSelectionModel().select(0);// gambis
+        cbbGarcom.getSelectionModel().select(c.getGar().getCod());
+        
+        
+        
         dtp_Data.setValue(c.getData());
         alteraValor();
     }
