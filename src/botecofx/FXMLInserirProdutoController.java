@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import util.MaskFieldUtil;
 
 /**
  * FXML Controller class
@@ -68,6 +69,8 @@ public class FXMLInserirProdutoController implements Initializable
     private Produto p;
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -76,6 +79,9 @@ public class FXMLInserirProdutoController implements Initializable
        colnome.setCellValueFactory(new PropertyValueFactory("nome"));
        colpreco.setCellValueFactory(new PropertyValueFactory("preco"));
        colcod.setCellValueFactory(new PropertyValueFactory("cod"));
+       
+        MaskFieldUtil.numericField(txquantidade);
+        carregaTabela("");
     }    
 
     @FXML
@@ -125,6 +131,7 @@ public class FXMLInserirProdutoController implements Initializable
         if(tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
             btconfirmar.setDisable(false);
+            txproduto.setDisable(true);
             p = (Produto) tabela.getSelectionModel().getSelectedItem();
             txproduto.setText(p.getNome());
         }

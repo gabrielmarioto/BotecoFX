@@ -35,6 +35,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -46,6 +47,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import util.MaskFieldUtil;
 
 /**
@@ -189,7 +191,8 @@ public class FXMLComandaPopUpController implements Initializable
     @FXML
     private void ClkBtInserirItem(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLInsereProduto.fxml"));
+        carregaTabela();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLInserirProduto.fxml"));
         Parent root = (Parent) loader.load();
         FXMLInserirProdutoController p = loader.getController();
         Stage stage = new Stage();
@@ -205,17 +208,52 @@ public class FXMLComandaPopUpController implements Initializable
     @FXML
     private void ClkBtRemoverItem(ActionEvent event)
     {
+        if(tbvItems.getSelectionModel().getSelectedItem() != null)
+        {
+            if(JOptionPane.showConfirmDialog(null, "Deseja Realmente Excluir?") == JOptionPane.OK_OPTION )
+                c.getItens().remove(tbvItems.getSelectionModel().getSelectedItem());
+            alteraValor();
+            carregaTabela();
+        }
+        
     }
 
 
     @FXML
-    private void clkBtInserirPag(ActionEvent event)
+    private void clkBtInserirPag(ActionEvent event) throws IOException
     {
+        if(valor > 0)
+        {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLInserirPagamento.fxml"));
+            Parent root = (Parent) loader.load();
+            FXMLInserirPagamentoController p = loader.getController();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            Comanda.Pagamento pg = p.getPgto();
+            c.addPagamento(pg.getValor(), pg.getTipo());
+            alteraValor();
+            carregaTabela();
+        }
+        else
+        {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Não há mais nada para pagar");
+            a.show();
+        }
     }
 
     @FXML
     private void clkBtRemoverPag(ActionEvent event)
     {
+        if(tbvPagamentos.getSelectionModel().getSelectedItem() != null)
+        {
+           if(JOptionPane.showConfirmDialog(null, "Deseja Realmente Excluir?") == JOptionPane.OK_OPTION )
+               c.getPagamentos().remove(tbvPagamentos.getSelectionModel().getSelectedItem());
+           carregaTabela();
+           alteraValor();
+        }
     }
     
     public Comanda getComanda()
@@ -327,8 +365,8 @@ public class FXMLComandaPopUpController implements Initializable
     private void clkTabelaItens(MouseEvent event)
     {
         if(tbvItems.getSelectionModel().getSelectedItem() != null)
-        {
-            btnRemoverItem.setDisable(false);
+        {                   
+                btnRemoverItem.setDisable(false);
         }
     }
 
