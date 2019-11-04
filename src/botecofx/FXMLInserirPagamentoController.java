@@ -44,6 +44,7 @@ public class FXMLInserirPagamentoController implements Initializable
     private JFXComboBox<TipoPgto> cbbTipo;
     @FXML
     private JFXTextField txvalor;
+    Double valor;
     private Comanda c = new Comanda();
     /**
      * Initializes the controller class.
@@ -63,7 +64,7 @@ public class FXMLInserirPagamentoController implements Initializable
     @FXML
     private void clkBtConfirmar(ActionEvent event)
     {
-         Double valor;
+        
         try
         {
             valor = Double.parseDouble(txvalor.getText().replace(".", "").replace(',', '.'));
@@ -86,6 +87,10 @@ public class FXMLInserirPagamentoController implements Initializable
      public Comanda.Pagamento getPgto()
     {
         return c.getPagamentos().get(0);
+    }
+      public double getValotPgto()
+    {
+        return valor;
     }
     
 }

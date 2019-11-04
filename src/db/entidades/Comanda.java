@@ -11,12 +11,10 @@ public class Comanda
     {
        private Produto p;
        private int quant;
-       private double valor; //valor unitario;
 
-        public Item(Produto p, int quant, double valor) {
+        public Item(Produto p, int quant) {
             this.p = p;
             this.quant = quant;
-            this.valor = valor;
         }
 
         public Produto getP() {
@@ -35,14 +33,7 @@ public class Comanda
             this.quant = quant;
         }
 
-        public double getValor() {
-            return valor;
-        }
-
-        public void setValor(double valor) {
-            this.valor = valor;
-        }
-       
+        
     }
     public class Pagamento
     {
@@ -186,12 +177,8 @@ public class Comanda
     public String toString() {
         return nome;
     }
-    public void addProduto(Produto p, int q)
-    {
-        itens.add(new Item(p, q, p.getPreco()));
-    }
-    public void addProduto(Produto prod, int quantidade, double valor) {
-        itens.add(new Item(prod, quantidade, valor));
+    public void addProduto(Produto prod, int quantidade) {
+        itens.add(new Item(prod, quantidade));
     }
     public void addPagamento(double valor, TipoPgto tp)
     {

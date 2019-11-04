@@ -92,7 +92,6 @@
                      <columns>
                         <TableColumn fx:id="colnome" maxWidth="1.7976931348623157E308" minWidth="136.0" prefWidth="136.0" text="Nome" />
                         <TableColumn fx:id="colquantidade" maxWidth="578.0" minWidth="92.0" prefWidth="118.0" text="Quantidade" />
-                        <TableColumn fx:id="colpreco" maxWidth="578.0" minWidth="87.0" prefWidth="104.0" text="Preço" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

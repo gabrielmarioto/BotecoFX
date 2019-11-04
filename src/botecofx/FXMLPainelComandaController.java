@@ -44,10 +44,10 @@ public class FXMLPainelComandaController implements Initializable {
                 Parent root = (Parent) loader.load();
                 FXMLComandaController ctl = loader.getController();
                 ctl.setComanda(c);
-                if(c.getPagamentos().isEmpty())
-                    ctl.setCor("#938d99");
-                else
-                    ctl.setCor("#a675a1"); //Alterar cor daqui
+                if(c.getValor() > 0)
+                    ctl.setCor("#00FF00");
+                if(c.getValor() == 0)
+                    ctl.setCor("#FF0000"); 
                 painel.getChildren().add(root);
             } 
         }

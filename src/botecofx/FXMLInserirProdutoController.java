@@ -64,8 +64,8 @@ public class FXMLInserirProdutoController implements Initializable
     private TableColumn<Produto, String> colnome;
     @FXML
     private TableColumn<Produto, Double> colpreco;
-
-    private Comanda c = new Comanda();
+    
+    private Comanda c = FXMLComandaPopUpController.c;
     private Produto p;
     /**
      * Initializes the controller class.
@@ -89,7 +89,7 @@ public class FXMLInserirProdutoController implements Initializable
     {
         if(!txproduto.getText().isEmpty())
         {
-            c.addProduto(p, Integer.parseInt(txquantidade.getText()), p.getPreco());
+            c.addProduto(p, Integer.parseInt(txquantidade.getText()));
             ((Stage)btconfirmar.getScene().getWindow()).close();
         }
         else

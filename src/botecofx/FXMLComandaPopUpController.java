@@ -89,8 +89,6 @@ public class FXMLComandaPopUpController implements Initializable
     @FXML
     private TableColumn<Comanda.Item, Integer> colquantidade;
     @FXML
-    private TableColumn<Comanda.Item, Double> colpreco;
-    @FXML
     private TableView<Comanda.Pagamento> tbvPagamentos;
     @FXML
     private TableColumn<Comanda.Pagamento, String> coltipo;
@@ -100,7 +98,7 @@ public class FXMLComandaPopUpController implements Initializable
     private AnchorPane pnDados2;
     @FXML
     private AnchorPane pnDados1;
-    private Comanda c;
+    public static Comanda c = new Comanda();
     private double valor;
     @FXML
     private JFXButton btnRemoverItem;
@@ -110,7 +108,6 @@ public class FXMLComandaPopUpController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         colnome.setCellValueFactory(new PropertyValueFactory("p"));
-        colpreco.setCellValueFactory(new PropertyValueFactory("valor"));
         colquantidade.setCellValueFactory(new PropertyValueFactory("quant"));
         
         coltipo.setCellValueFactory(new PropertyValueFactory("tipo"));
@@ -136,6 +133,9 @@ public class FXMLComandaPopUpController implements Initializable
                 String sql = "select * from comanda c join item i on i.com_id = c.com_id join pagamento p on p.com_id = c.com_id join produto pr on pr.prod_id = i.prod_id join tipopgto tp on p.tpg_id = tp.tpg_id where c.com_id = " + c.getCod();
                 //FXMLPrincipalController.gerarRelatorioIntegrado(sql, "rel/nota_fiscal.jasper", null, null);
                 //clkBtnCancelar(event);
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setContentText("Comanda fechada!");
+                a.showAndWait();
             } else {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setContentText("Erro ao fechar comanda");
@@ -155,7 +155,7 @@ public class FXMLComandaPopUpController implements Initializable
         if(isOk())
         {
             DALComanda dal = new DALComanda();
-            c = new Comanda(c.getCod(),cbbGarcom.getValue(), Integer.parseInt(txmesa.getText()), txnome.getText(), dtp_Data.getValue(), txdescricao.getText(), 0, 'A');
+           // c = new Comanda(c.getCod(),cbbGarcom.getValue(), Integer.parseInt(txmesa.getText()), txnome.getText(), dtp_Data.getValue(), txdescricao.getText(), 0, 'A');
             if(dal.alterar(c))
             {
                 snackBar("Comanda alterada com sucesso");
@@ -200,7 +200,7 @@ public class FXMLComandaPopUpController implements Initializable
         stage.setScene(scene);
         stage.showAndWait();
         Comanda.Item ite = p.getProduto();
-        c.addProduto(ite.getP(), ite.getQuant(), ite.getValor());
+       
         alteraValor();
         carregaTabela();
     }
@@ -232,16 +232,26 @@ public class FXMLComandaPopUpController implements Initializable
             stage.setScene(scene);
             stage.showAndWait();
             Comanda.Pagamento pg = p.getPgto();
-            c.addPagamento(pg.getValor(), pg.getTipo());
+            if(p.getValotPgto()<= valor)
+                c.addPagamento(pg.getValor(), pg.getTipo());
+            else
+            {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Valor Incorreto");
+                a.show();
+            }
             alteraValor();
             carregaTabela();
         }
         else
         {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setContentText("Não há mais nada para pagar");
-            a.show();
+            
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Não há mais nada para pagar!");
+                a.show();
+            
         }
+        
     }
 
     @FXML
@@ -328,7 +338,7 @@ public class FXMLComandaPopUpController implements Initializable
         valor = 0;
         double val = 0;
         for(Comanda.Item ci : c.getItens())
-            valor += ci.getValor() * ci.getQuant();
+            valor += ci.getP().getPreco() * ci.getQuant();
         c.setValor(valor);
         for(Comanda.Pagamento p : c.getPagamentos())
             val += p.getValor();

@@ -104,8 +104,9 @@ public class DALComanda {
             {
                 SQL = "DELETE FROM item where com_id = " + c.getCod();
                 Banco.getCon().manipular(SQL);
-                //List <Comanda.Item> itens = c.getItens();
+                List <Comanda.Item> itens = new ArrayList<>();
                 System.out.println("DELETE "+SQL);
+
                 for(Item i: c.getItens())
                 {
                     SQL = "INSERT INTO item (com_id, prod_id, it_quantidade) VALUES (#1, #2, #3)";
@@ -124,10 +125,10 @@ public class DALComanda {
                     System.out.println("DELETE PAGAMENTO"+SQL);
                     for(Pagamento p: pagamentos)
                     {
-                        SQL = "INSERT INTO pagamento (com_id, pag_valor, tpg_id) VALUES (#1, #2, #3)";
+                        SQL = "INSERT INTO pagamento (com_id,pag_valor,tpg_id) VALUES (#1,"+p.getValor()+","+p.getTipo().getCod()+")";
                         SQL = SQL.replace("#1", "" + c.getCod());
-                        SQL = SQL.replace("#2", "" + p.getValor());
-                        SQL = SQL.replace("#3", "" + p.getTipo().getCod());
+             
+                        System.out.println(SQL);
                         System.out.println("INSERER PGTO "+SQL);
                         Banco.getCon().manipular(SQL);
                     }
@@ -212,7 +213,7 @@ public class DALComanda {
                 Sql = "SELECT * FROM item WHERE com_id = " + c.getCod();
                 rs = Banco.getCon().consultar(Sql); 
                 while(rs.next())
-                    c.addProduto(p.get(rs.getInt("prod_id")) , rs.getInt("it_quantidade"), rs.getDouble("it_preco"));
+                    c.addProduto(p.get(rs.getInt("prod_id")) , rs.getInt("it_quantidade"));
                 
                 //Le pagamentos da comanda
                 Sql = "SELECT * FROM pagamento WHERE com_id = " + c.getCod();
@@ -251,7 +252,7 @@ public class DALComanda {
                 Sql = "SELECT * FROM item WHERE com_id = " + c.get(i).getCod();
                 rs_ip = Banco.getCon().consultar(Sql); 
                 while(rs_ip.next())
-                   c.get(i).addProduto(p.get(rs_ip.getInt("prod_id")) , rs_ip.getInt("it_quantidade"), rs_ip.getDouble("it_preco"));
+                   c.get(i).addProduto(p.get(rs_ip.getInt("prod_id")) , rs_ip.getInt("it_quantidade"));
                 
                 //Le pagamentos da comanda
                 Sql = "SELECT * FROM pagamento WHERE com_id = " + c.get(i).getCod();
