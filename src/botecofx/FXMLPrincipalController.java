@@ -5,11 +5,13 @@
  */
 package botecofx;
 
+import db.util.Banco;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -188,6 +194,32 @@ public class FXMLPrincipalController implements Initializable
         } catch (IOException ex)
         {
             System.out.println(ex);
+        }
+    }
+
+    @FXML
+    private void clkRelatorioProd(ActionEvent event) {
+        String sql = "select prod_id, prod_nome, prod_preco, prod_descr, uni_nome, cat_nome from produto p, categoria c, unidade u where p.cat_id = c.cat_id and p.uni_id = u.uni_id order by prod_id";
+        gerarRelatorio(sql,"src/relatorios/llista.jasper", "Relatório");
+    }
+    
+    private void gerarRelatorio(String sql, String relat, String titulotela) 
+    {
+        try 
+        {  //sql para obter os dados para o relatorio
+            ResultSet rs = Banco.getCon().consultar(sql);
+            //implementação da interface JRDataSource para DataSource ResultSet
+            JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
+            //preenchendo e chamando o relatório
+            String jasperPrint = JasperFillManager.fillReportToFile(relat, null, jrRS);
+            JasperViewer viewer = new JasperViewer(jasperPrint, false, false);
+
+            viewer.setExtendedState(JasperViewer.MAXIMIZED_BOTH);//maximizado
+            viewer.setTitle(titulotela);
+            viewer.setVisible(true);
+        } catch (JRException erro) 
+        {
+            System.out.println(erro);
         }
     }
 

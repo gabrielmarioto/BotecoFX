@@ -33,9 +33,9 @@
                     <MenuItem onAction="#clkMostrarComandas" text="_Exibir Comandas" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="_Help">
+                <Menu mnemonicParsing="false" text="Relatórios">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem mnemonicParsing="false" onAction="#clkRelatorioProd" text="Relatório de Produtos" />
                   </items>
                 </Menu>
               </menus>
