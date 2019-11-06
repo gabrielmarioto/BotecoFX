@@ -33,9 +33,12 @@
                     <MenuItem onAction="#clkMostrarComandas" text="_Exibir Comandas" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Relatórios">
+                <Menu mnemonicParsing="false" text="_Relatórios">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#clkRelatorioProd" text="Relatório de Produtos" />
+                    <MenuItem onAction="#clkRelatorioProd" text="_Produtos" />
+                        <MenuItem onAction="#clkRelatorioProdCat" text="Produtos por _Categoria" />
+                        <MenuItem onAction="#clkRelatorioGarcom" text="_Garçons por Cidade" />
+                        <MenuItem onAction="#clkRelatorioComanda" text="Comanda por _Periodo" />
                   </items>
                 </Menu>
               </menus>

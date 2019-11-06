@@ -21,7 +21,7 @@ public class Banco
     static public boolean conectar()
     {
         con = new Conexao(); 
-        return con.conectar("jdbc:postgresql://localhost/","botecobd" ,"postgres", "postgres123");
+        return con.conectar("jdbc:postgresql://localhost/","botecodb" ,"postgres", "postgres123");
             
     }
      public static boolean criarTabelas(String script, String BD)

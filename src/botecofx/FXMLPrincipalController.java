@@ -200,7 +200,7 @@ public class FXMLPrincipalController implements Initializable
     @FXML
     private void clkRelatorioProd(ActionEvent event) {
         String sql = "select prod_id, prod_nome, prod_preco, prod_descr, uni_nome, cat_nome from produto p, categoria c, unidade u where p.cat_id = c.cat_id and p.uni_id = u.uni_id order by prod_id";
-        gerarRelatorio(sql,"src/relatorios/llista.jasper", "Relatório");
+        gerarRelatorio(sql,"src/relatorios/rel_produtos.jasper", "Relatório");
     }
     
     private void gerarRelatorio(String sql, String relat, String titulotela) 
@@ -221,6 +221,25 @@ public class FXMLPrincipalController implements Initializable
         {
             System.out.println(erro);
         }
+    }
+
+    @FXML
+    private void clkRelatorioProdCat(ActionEvent event)
+    {
+        String sql = "SELECT * FROM produto p JOIN categoria c ON  p.cat_id = c.cat_id ORDER BY  c.cat_nome, p.prod_nome";
+        gerarRelatorio(sql, "src/relatorios/rel_prod_agp2.jasper", null);
+    }
+
+    @FXML
+    private void clkRelatorioGarcom(ActionEvent event)
+    {
+        String sql = "select gar_cidade, gar_nome from garcon order by gar_cidade, gar_nome";
+        gerarRelatorio(sql, "src/relatorios/rel_garcon.jasper", null);
+    }
+
+    @FXML
+    private void clkRelatorioComanda(ActionEvent event)
+    {
     }
 
 }
