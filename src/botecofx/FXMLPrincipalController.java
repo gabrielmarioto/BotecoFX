@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -200,10 +201,10 @@ public class FXMLPrincipalController implements Initializable
     @FXML
     private void clkRelatorioProd(ActionEvent event) {
         String sql = "select prod_id, prod_nome, prod_preco, prod_descr, uni_nome, cat_nome from produto p, categoria c, unidade u where p.cat_id = c.cat_id and p.uni_id = u.uni_id order by prod_id";
-        gerarRelatorio(sql,"src/relatorios/rel_produtos.jasper", "Relatório");
+        gerarRelatorio(sql,"src/relatorios/rel_produtos.jasper", "Relatório", null);
     }
     
-    private void gerarRelatorio(String sql, String relat, String titulotela) 
+    private void gerarRelatorio(String sql, String relat, String titulotela, HashMap parametros) 
     {
         try 
         {  //sql para obter os dados para o relatorio
@@ -211,7 +212,7 @@ public class FXMLPrincipalController implements Initializable
             //implementação da interface JRDataSource para DataSource ResultSet
             JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
             //preenchendo e chamando o relatório
-            String jasperPrint = JasperFillManager.fillReportToFile(relat, null, jrRS);
+            String jasperPrint = JasperFillManager.fillReportToFile(relat, parametros, jrRS);
             JasperViewer viewer = new JasperViewer(jasperPrint, false, false);
 
             viewer.setExtendedState(JasperViewer.MAXIMIZED_BOTH);//maximizado
@@ -227,14 +228,16 @@ public class FXMLPrincipalController implements Initializable
     private void clkRelatorioProdCat(ActionEvent event)
     {
         String sql = "SELECT * FROM produto p JOIN categoria c ON  p.cat_id = c.cat_id ORDER BY  c.cat_nome, p.prod_nome";
-        gerarRelatorio(sql, "src/relatorios/rel_prod_agp2.jasper", null);
+//        HashMap parametros = new HashMap();
+//        parametros.put("mensagem", "Relatorio de Preços de 2019");
+        gerarRelatorio(sql, "src/relatorios/rel_prod_agp2.jasper", null, null);
     }
 
     @FXML
     private void clkRelatorioGarcom(ActionEvent event)
     {
         String sql = "select gar_cidade, gar_nome from garcon order by gar_cidade, gar_nome";
-        gerarRelatorio(sql, "src/relatorios/rel_garcon.jasper", null);
+        gerarRelatorio(sql, "src/relatorios/rel_garcon.jasper", null, null);
     }
 
     @FXML
