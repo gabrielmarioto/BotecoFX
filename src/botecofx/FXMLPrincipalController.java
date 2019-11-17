@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
+import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,9 +26,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+import javax.swing.SwingUtilities;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JRViewer;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -239,10 +243,39 @@ public class FXMLPrincipalController implements Initializable
         String sql = "select gar_cidade, gar_nome from garcon order by gar_cidade, gar_nome";
         gerarRelatorio(sql, "src/relatorios/rel_garcon.jasper", null, null);
     }
-
-    @FXML
-    private void clkRelatorioComanda(ActionEvent event)
+    public static void gerarRelatorioIntegrado(String sql, String relat, String titulo, String parame)
     {
+        try 
+        {  
+            //sql para obter os dados para o relatorio
+            ResultSet rs = Banco.getCon().consultar(sql);
+            //implementação da interface JRDataSource para DataSource ResultSet
+            JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
+            //preenchendo e chamando o relatório
+            
+            HashMap param = new HashMap<String, String>();
+            param.put(parame, titulo);
+            
+            JasperPrint jasperPrint = JasperFillManager.fillReport(relat, param, jrRS);
+            JRViewer viewer = new JRViewer(jasperPrint);
+            viewer.setOpaque(true);
+            viewer.setVisible(true);
+            viewer.setZoomRatio(1f);
+            
+            SwingNode sn = new SwingNode();
+            SwingUtilities.invokeLater(()->{sn.setContent(viewer);});
+            spnprincipal.setCenter(sn);
+
+        } catch (JRException erro) {
+            System.out.println(erro);
+        }
+    } 
+    @FXML
+    private void clkRelatorioComanda(ActionEvent event) throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLRelatorioComanda.fxml"));
+        efeito(true);
+        pnprincipal.setCenter(root);
     }
 
 }

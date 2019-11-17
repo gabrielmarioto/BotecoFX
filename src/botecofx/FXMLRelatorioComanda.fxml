@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="botecofx.FXMLRelatorioComandaController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="45.0" prefWidth="600.0" style="-fx-background-color: #4c4c4c;">
+         <children>
+            <JFXButton onAction="#clkGerar" text="Gerar Relatorio" textFill="ORANGE" />
+            <JFXButton layoutX="262.0" layoutY="20.0" onAction="#clkCancelar" text="Cancelar" textFill="ORANGE" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="39.0" prefWidth="600.0">
+         <children>
+            <Label text="Selecione um periodo para o relatorio:">
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="125.0" prefWidth="600.0">
+         <children>
+            <JFXDatePicker fx:id="dtpInicial" defaultColor="ORANGE" promptText="Data Inicial" />
+            <JFXDatePicker fx:id="dtpFinal" defaultColor="ORANGE" layoutX="225.0" layoutY="60.0" promptText="Data Final" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
