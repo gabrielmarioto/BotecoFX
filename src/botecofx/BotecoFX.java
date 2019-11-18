@@ -52,23 +52,24 @@ public class BotecoFX extends Application
             if(JOptionPane.showConfirmDialog(null, "Deseja criar uma base de dados?") == JOptionPane.YES_OPTION)
             {
                 if(!Banco.criarBD("botecodb"))
-                {
+                {                    
                     JOptionPane.showMessageDialog(null, "Erro ao criar banco: " + Banco.getCon().getMensagemErro());
                     System.exit(-1);
                 }
                 else
                 {
+                    Banco.realizaRestaure("bdutil\\restore.bat");
                     if(!Banco.conectar())
                     {
                         JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco");                    
                         System.exit(-1);
                     }
-                    else                        
-                        if(!Banco.criarTabelas("script/script.sql", "botecodb"))
-                        {
-                            JOptionPane.showMessageDialog(null, "Erro ao criar tabelas: " + Banco.getCon().getMensagemErro());
-                            System.exit(-1);
-                        }
+//                    else                        
+//                        if(!Banco.criarTabelas("script/script.sql", "botecodb"))
+//                        {
+//                            JOptionPane.showMessageDialog(null, "Erro ao criar tabelas: " + Banco.getCon().getMensagemErro());
+//                            System.exit(-1);
+//                        }
                 }
             }    
             else

@@ -205,7 +205,7 @@ public class FXMLPrincipalController implements Initializable
     @FXML
     private void clkRelatorioProd(ActionEvent event) {
         String sql = "select prod_id, prod_nome, prod_preco, prod_descr, uni_nome, cat_nome from produto p, categoria c, unidade u where p.cat_id = c.cat_id and p.uni_id = u.uni_id order by prod_id";
-        gerarRelatorio(sql,"src/relatorios/rel_produtos.jasper", "Relatório", null);
+        gerarRelatorio(sql,"relatorios/rel_produtos.jasper", "Relatório", null);
     }
     
     private void gerarRelatorio(String sql, String relat, String titulotela, HashMap parametros) 
@@ -234,14 +234,14 @@ public class FXMLPrincipalController implements Initializable
         String sql = "SELECT * FROM produto p JOIN categoria c ON  p.cat_id = c.cat_id ORDER BY  c.cat_nome, p.prod_nome";
 //        HashMap parametros = new HashMap();
 //        parametros.put("mensagem", "Relatorio de Preços de 2019");
-        gerarRelatorio(sql, "src/relatorios/rel_prod_agp2.jasper", null, null);
+        gerarRelatorio(sql, "relatorios/rel_prod_agp2.jasper", null, null);
     }
 
     @FXML
     private void clkRelatorioGarcom(ActionEvent event)
     {
         String sql = "select gar_cidade, gar_nome from garcon order by gar_cidade, gar_nome";
-        gerarRelatorio(sql, "src/relatorios/rel_garcon.jasper", null, null);
+        gerarRelatorio(sql, "relatorios/rel_garcon.jasper", null, null);
     }
     public static void gerarRelatorioIntegrado(String sql, String relat, String titulo, String parame)
     {
@@ -276,6 +276,18 @@ public class FXMLPrincipalController implements Initializable
         Parent root = FXMLLoader.load(getClass().getResource("FXMLRelatorioComanda.fxml"));
         efeito(true);
         pnprincipal.setCenter(root);
+    }
+
+    @FXML
+    private void clkBackup(ActionEvent event) 
+    {
+        Banco.realizaBackup("bdutil\\backup.bat");
+    }
+
+    @FXML
+    private void clkRestauracao(ActionEvent event)
+    {
+        Banco.realizaRestaure("bdutil\\restore.bat");
     }
 
 }

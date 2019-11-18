@@ -48,7 +48,7 @@ public class FXMLRelatorioComandaController implements Initializable
             String sql = "SELECT com_data, com_id, com_numero, com_nome, com_desc, gar_nome, com_valor, com_status FROM comanda c INNER JOIN garcon g ON c.gar_id = g.gar_id WHERE c.com_data between '#1' AND '#2' ORDER BY c.com_data";
             sql=sql.replaceAll("#1", dtpInicial.getValue().toString());
             sql=sql.replaceAll("#2", dtpFinal.getValue().toString());
-            gerarRelatorioIntegrado(sql, "src/relatorios/rel_comanda_data.jasper", dtpInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")) + " à " + dtpFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")), "periodo");
+            gerarRelatorioIntegrado(sql, "relatorios/rel_comanda_data.jasper", dtpInicial.getValue().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")) + " à " + dtpFinal.getValue().format(DateTimeFormatter.ofPattern("dd/MM/uuuu")), "periodo");
             System.out.println(sql);
         }
     }

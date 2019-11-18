@@ -18,7 +18,7 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="_Gerenciar Cadastros">
+                <Menu mnemonicParsing="false" text="_GERENCIAR CADASTROS">
                   <items>
                         <MenuItem onAction="#clkCadCategoria" text="_Categoria" />
                         <MenuItem onAction="#clkCadUnidade" text="_Unidade" />
@@ -27,13 +27,13 @@
                         <MenuItem onAction="#clkCadGarcom" text="_Garcom" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="_Gerenciar Comanda">
+                <Menu mnemonicParsing="false" text="_GERENCIAR COMANDA">
                   <items>
                         <MenuItem onAction="#clkNovaComanda" text="_Nova Comanda" />
                     <MenuItem onAction="#clkMostrarComandas" text="_Exibir Comandas" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="_Relatórios">
+                <Menu mnemonicParsing="false" text="_RELATÓROS">
                   <items>
                     <MenuItem onAction="#clkRelatorioProd" text="_Produtos" />
                         <MenuItem onAction="#clkRelatorioProdCat" text="Produtos por _Categoria" />
@@ -41,6 +41,12 @@
                         <MenuItem onAction="#clkRelatorioComanda" text="Comanda por _Periodo" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="_FERRAMENTAS">
+                     <items>
+                        <MenuItem onAction="#clkBackup" text="_BackUp" />
+                        <MenuItem onAction="#clkRestauracao" text="_Restauração" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
